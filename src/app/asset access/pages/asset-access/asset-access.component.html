@@ -1,0 +1,272 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1 i18n="Page header|Manage Asset Access@@manageAssetAccess" class="page-header">
+            Manage Asset Access
+        </h1>
+    </div>
+</div>
+
+<!-- asset access  Form starts here -->
+<div class="row margin_0px rowBox">
+    <div class="col-md-12 padding_0px">
+        <div class="padding_Form">
+            <form [formGroup]="assetAccessForm" novalidate (ngSubmit)="saveAssetAccess()">
+                <legend i18n="Header|Asset Access Information@@assetAccessInformation" class="m-b-15"> Asset Access
+                    Information</legend>
+                <div class="formBodyCustom1" id="">
+                    <div class="m-form__group row margin_0px">
+                        <div class="col-md-4 p-0">
+                            <label i18n="Access Group|Access Group@@accessGroup*">Access Group<span
+                                    class="text-danger">*</span></label>
+                            <div class="form-group">
+                                <div [ngClass]="{'has-error': ((assetAccessForm.get('accessGroupId').touched ||
+                                assetAccessForm.get('accessGroupId').dirty) &&
+                                assetAccessForm.get('accessGroupId').errors)}">
+                                    <select (change)="onChangeAccessGroup($event)" formControlName="accessGroupId"
+                                        class="form-control m-input" required>
+                                        <option [ngValue]="null" i18n="Option|Select@@select">--Select--</option>
+                                        <option *ngFor="let accessGroup of accessGroups" [value]="accessGroup.id">
+                                            {{accessGroup.name}}</option>
+                                    </select>
+                                    <span class="help-block" *ngIf="((assetAccessForm.get('accessGroupId').touched ||
+                                      assetAccessForm.get('accessGroupId').dirty) &&
+                                      assetAccessForm.get('accessGroupId').errors)">
+                                        <span i18n="Message|Please select Access Group Name@@accessGroup.message"
+                                            class="help-block"
+                                            *ngIf="assetAccessForm.get('accessGroupId').errors.required">
+                                            Please select Access Group Name
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8"></div>
+                    </div>
+
+                    <div class="m-form__group row margin_0px rowBox">
+                        <div class="col-lg-6 border-right panel-left">
+                            <div class="row panel-header">
+                                <div class="clo-lg-12 panel-header">
+                                    <legend class="headerTitle py-1 m-0" i18n="Header|Asset@@asset">
+                                        Asset
+                                    </legend>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                                        <mat-tree-node *matTreeNodeDef="let node" [hidden]="!node.visible" matTreeNodeToggle
+                                            matTreeNodePadding>
+                                            <button type="button" mat-icon-button disabled></button>
+                                            <mat-checkbox #button class="checklist-leaf-node"
+                                                [checked]="checklistSelection.isSelected(node)"
+                                                (change)="todoLeafItemSelectionToggle(node,button.checked)">{{node.assetName}}
+                                            </mat-checkbox>
+                                        </mat-tree-node>
+        
+                                        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" [hidden]="!node.visible"
+                                            matTreeNodePadding>
+                                            <button type="button" mat-icon-button matTreeNodeToggle
+                                                [attr.aria-label]="'toggle ' + node.filename">
+                                                <mat-icon class="mat-icon-rtl-mirror">
+                                                    {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                                </mat-icon>
+                                            </button>
+                                            <mat-checkbox #button [checked]="descendantsAllSelected(node)"
+                                                [indeterminate]="descendantsPartiallySelected(node)"
+                                                (change)="todoItemSelectionToggle(node,button.checked)">
+                                                {{node.assetName}}
+                                            </mat-checkbox>
+                                        </mat-tree-node>
+                                    </mat-tree>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 panel-left">
+                            <div class="row panel-header">
+                                <div class="clo-lg-12 ">
+                                    <legend class="headerTitle py-1 m-0" i18n="Header|Access Type@@accessType">
+                                        Access Type
+                                    </legend>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                                        <mat-tree-node *matTreeNodeDef="let node" [hidden]="!node.visible" matTreeNodeToggle>
+                                            <select (change)="onChangeAccessType($event,node)" [disabled]="!node.isSelected"
+                                                class="w-50 form-control my-1">
+                                                <option [selected]="!node.isSelected" [ngValue]="null"
+                                                    i18n="Option|Select@@select">--Select--</option>
+                                                <option *ngFor="let accessType of accessTypes"
+                                                    [selected]="node.accessTypeId === accessType.id" [value]=accessType.id>
+                                                    {{accessType.name}}</option>
+                                            </select>
+                                            <ng-container *ngIf="checkedAssetIds.size!=0">
+                                                <ng-container *ngFor="let checkedAssetId of checkedAssetIds">
+                                                    <span class="help-block p-3 m-2" *ngIf="checkedAssetId===node.assetId">
+                                                        <span
+                                                            i18n="Message|Please select access type@@accessType.message">Please
+                                                            select Access Type</span>
+                                                    </span>
+                                                </ng-container>
+                                            </ng-container>
+                                            <!--  <span class="help-block" *ngIf="isAccessTypeSelected">
+                                                <span i18n="Message|Please select access type@@accessType.message">Please
+                                                    select access type</span>
+                                            </span> -->
+                                        </mat-tree-node>
+        
+                                        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" [hidden]="!node.visible">
+                                            <select (change)="onChangeAccessType($event,node)" [disabled]="!node.isSelected"
+                                                class="w-50 form-control my-1">
+                                                <option [selected]="!node.isSelected" [ngValue]="null"
+                                                    i18n="Option|Select@@select">--Select--</option>
+                                                <option *ngFor="let accessType of accessTypes"
+                                                    [selected]="node.accessTypeId === accessType.id" [value]=accessType.id>
+                                                    {{accessType.name}}</option>
+                                            </select>
+                                            <ng-container *ngIf="checkedAssetIds.size!=0">
+                                                <ng-container *ngFor="let checkedAssetId of checkedAssetIds">
+                                                    <span class="help-block p-3 m-2" *ngIf="checkedAssetId===node.assetId">
+                                                        <span
+                                                            i18n="Message|Please select access type@@accessType.message">Please
+                                                            select Access Type</span>
+                                                    </span>
+                                                </ng-container>
+                                            </ng-container>
+                                            <!--  <span class="help-block" *ngIf="isAccessTypeSelected">
+                                                <span i18n="Message|Please select access type@@accessType.message">Please
+                                                    select access type</span>
+                                            </span> -->
+                                        </mat-tree-node>
+                                    </mat-tree>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="row margin_0px rowBox mb-3 ps position-relative" appScrollbarDirective style="height: calc(100vh - 340px);">
+                        <div class="col-md-6">
+                            <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                                <mat-tree-node *matTreeNodeDef="let node" [hidden]="!node.visible" matTreeNodeToggle
+                                    matTreeNodePadding>
+                                    <button type="button" mat-icon-button disabled></button>
+                                    <mat-checkbox #button class="checklist-leaf-node"
+                                        [checked]="checklistSelection.isSelected(node)"
+                                        (change)="todoLeafItemSelectionToggle(node,button.checked)">{{node.assetName}}
+                                    </mat-checkbox>
+                                </mat-tree-node>
+
+                                <mat-tree-node *matTreeNodeDef="let node; when: hasChild" [hidden]="!node.visible"
+                                    matTreeNodePadding>
+                                    <button type="button" mat-icon-button matTreeNodeToggle
+                                        [attr.aria-label]="'toggle ' + node.filename">
+                                        <mat-icon class="mat-icon-rtl-mirror">
+                                            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                        </mat-icon>
+                                    </button>
+                                    <mat-checkbox #button [checked]="descendantsAllSelected(node)"
+                                        [indeterminate]="descendantsPartiallySelected(node)"
+                                        (change)="todoItemSelectionToggle(node,button.checked)">
+                                        {{node.assetName}}
+                                    </mat-checkbox>
+                                </mat-tree-node>
+                            </mat-tree>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                                <mat-tree-node *matTreeNodeDef="let node" [hidden]="!node.visible" matTreeNodeToggle>
+                                    <select (change)="onChangeAccessType($event,node)" [disabled]="!node.isSelected"
+                                        class="w-50 form-control my-1">
+                                        <option [selected]="!node.isSelected" [ngValue]="null"
+                                            i18n="Option|Select@@select">--Select--</option>
+                                        <option *ngFor="let accessType of accessTypes"
+                                            [selected]="node.accessTypeId === accessType.id" [value]=accessType.id>
+                                            {{accessType.name}}</option>
+                                    </select>
+                                    <ng-container *ngIf="checkedAssetIds.size!=0">
+                                        <ng-container *ngFor="let checkedAssetId of checkedAssetIds">
+                                            <span class="help-block p-3 m-2" *ngIf="checkedAssetId===node.assetId">
+                                                <span
+                                                    i18n="Message|Please select access type@@accessType.message">Please
+                                                    select Access Type</span>
+                                            </span>
+                                        </ng-container>
+                                    </ng-container>
+                                     <span class="help-block" *ngIf="isAccessTypeSelected">
+                                        <span i18n="Message|Please select access type@@accessType.message">Please
+                                            select access type</span>
+                                    </span>
+                                </mat-tree-node>
+
+                                <mat-tree-node *matTreeNodeDef="let node; when: hasChild" [hidden]="!node.visible">
+                                    <select (change)="onChangeAccessType($event,node)" [disabled]="!node.isSelected"
+                                        class="w-50 form-control my-1">
+                                        <option [selected]="!node.isSelected" [ngValue]="null"
+                                            i18n="Option|Select@@select">--Select--</option>
+                                        <option *ngFor="let accessType of accessTypes"
+                                            [selected]="node.accessTypeId === accessType.id" [value]=accessType.id>
+                                            {{accessType.name}}</option>
+                                    </select>
+                                    <ng-container *ngIf="checkedAssetIds.size!=0">
+                                        <ng-container *ngFor="let checkedAssetId of checkedAssetIds">
+                                            <span class="help-block p-3 m-2" *ngIf="checkedAssetId===node.assetId">
+                                                <span
+                                                    i18n="Message|Please select access type@@accessType.message">Please
+                                                    select Access Type</span>
+                                            </span>
+                                        </ng-container>
+                                    </ng-container>
+                                     <span class="help-block" *ngIf="isAccessTypeSelected">
+                                        <span i18n="Message|Please select access type@@accessType.message">Please
+                                            select access type</span>
+                                    </span>
+                                </mat-tree-node>
+                            </mat-tree>
+                        </div>
+                    </div> -->
+                </div>
+
+
+                <div class="path finalLine"></div>
+                <div class="row" style="text-align: right;padding: 23px 0;">
+                    <div class="col-md-12">
+                        <!-- <a (click)="cancelAssetAccessForm()">
+                            <button type="button" class="btn btn-default text-center" i18n="@@Cancel">
+                                Cancel
+                            </button>
+                        </a>
+                        &nbsp; -->
+                        <button type="button" class="btn btn-secondary text-center resetActionButton"
+                            [disabled]="!assetAccessForm.dirty && assetAccessForm.pristine"
+                            (click)="resetassetAccessForm()" i18n="Reset button|Reset@@reset"> Reset
+                        </button>
+                        &nbsp;
+                        <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                            matTooltip="Fill the mandatory fields"
+                            [matTooltipDisabled]="assetAccessForm.valid && saveButtonDisableStatus">
+                            <a>
+                                <button class="btn btn-primary text-center saveActionButton" type="submit"
+                                    [disabled]="!(assetAccessForm.valid && saveButtonDisableStatus)"
+                                    i18n="Save button|Save@@Save">
+                                    Save</button>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Access Group Form ends here -->
+
+
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+    <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationSuccess)="redirectTo()">
+</app-modal-notification>

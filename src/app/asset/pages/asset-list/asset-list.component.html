@@ -1,0 +1,93 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 i18n="Page header|Asset Configuration@@assetConfiguration" class="page-header">
+      Asset Configuration
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-4 col-md-12">
+    <div class="row margin_0px rowBox margin_top_5px">
+      <div class="col-md-12 col-12 d-none">
+        <div class="" style="padding: 10px;">
+          <h5 i18n="Header|Asset Hierarchy@@assetHierarchy">Asset Hierarchy</h5>
+        </div>
+      </div>
+      <!-- <div id='treeparent'>
+        <div class="row margin_0px rowBox margin_top_5px"> -->
+      <div class="col-md-12 padding_0px">
+        <div class="panel panel-inverse position-relative" style="margin-bottom: 0px;">
+          <app-panel-user i18n-name="Panel header|List of Assets@@listOfAssets" name="List of Assets" #panelHeader
+            (refreshTableList)="refreshTableListFunction()">
+            <!-- Input field for search -->
+            <input searchfieldPanel style="display: none" id="search" class="form-control m-input ml-2"
+              (keyup)="filterAsset($event.target.value)" i18n-placeholder="Search|Search placeholder@@search" matInput
+              placeholder="Search.." />
+            <!-- Search button -->
+            <a searchButtonPanel href="javascript:;" i18n-matTooltip="Search button|Click to Search@@ClickToSearch"
+              matTooltip="Click to Search" class="btn btn-xs btn-icon btn-circle btn-default"
+              (click)="panelHeader.searchButtonPanel(this.getDataSource)">
+              <i class="fa fa-search"></i>
+            </a>
+            <!-- Add New button -->
+            <a addNewButton i18n-matTooltip="AddNew button tooltip|Click to Add New@@addNew" (click)="addAsset($event)"
+              matTooltip="Click to Add New" class="btn btn-xs btn-icon btn-circle btn-warning">
+              <i class="fa fa-plus"></i>
+            </a>
+
+            <div>
+              <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+                align="center">
+                <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+              </div>
+
+              <h3 *ngIf="noRecordsFound" class="text-center noRecordsFound"
+                i18n="No records found text|No records found@@noRecordsFound">
+                No records found!
+              </h3>
+              <div id='treeelement' *ngIf="getDataSource?.length" class="ps position-relative treeelement"
+                appScrollbarDirective>
+                <ng-container *ngIf="!noRecordsFound">
+                  <ejs-treeview #treeview="" (nodeSelected)='nodeChecked($event)' [fields]='field'
+                  [allowMultiSelection]='allowMultiSelection' [allowDragAndDrop]='allowDragAndDrop'
+                  (nodeDragStop)="onDragStop($event)">
+                  <span i18n="Plus|Plus@@plus">Plus</span>
+                </ejs-treeview>
+                </ng-container>
+                
+              </div>
+            </div>
+          </app-panel-user>
+        </div>
+      </div>
+      <!-- </div>
+      </div> -->
+    </div>
+
+  </div>
+  <div class="col-lg-8 col-md-12 pl-0">
+    <!-- Asset form view -->
+    <app-asset-form-view *ngIf="displayPage == 'assetFormView'" (navigateTemplate)="gettingDisplayPage($event)">
+    </app-asset-form-view>
+
+    <!-- Asset Preview -->
+    <app-asset-preview *ngIf="displayPage == 'assetPreview'" (navigateTemplate)="gettingDisplayPage($event)">
+    </app-asset-preview>
+
+    <!-- Asset view mode -->
+    <app-asset-view *ngIf="displayPage == 'assetViewMode'" [childViewModeData]="asset" 
+          (navigateTemplate)="gettingDisplayPage($event)"></app-asset-view>
+
+    <!-- Manage Tags -->
+    <app-manage-asset-tag *ngIf="displayPage == 'manageAssetTags'" (navigateTemplate)="gettingDisplayPage($event)">
+    </app-manage-asset-tag>
+
+    <!-- <router-outlet></router-outlet> -->
+    <app-download-asset-tags *ngIf="displayPage == 'downloadAssetTags'" (navigateTemplate)="gettingDisplayPage($event)">
+    </app-download-asset-tags>
+  </div>
+</div>
+
+
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="confirmView();confirmDragAndDrop()"></app-modal-notification>

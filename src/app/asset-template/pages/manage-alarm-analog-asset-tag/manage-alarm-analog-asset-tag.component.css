@@ -1,0 +1,35 @@
+
+@media screen and (min-width:320px) and (max-width:1200px){
+    td.mat-cell:first-child{
+        white-space: nowrap;
+    }
+}
+
+.table{
+    display:table!important;
+    min-width: 100%;
+    table-layout:fixed!important;
+  }
+  .table th, .table td{
+    display:table-cell!important;
+    width: 200px!important;
+  }
+  
+   
+  
+/*   div.table-responsive{
+      overflow-x: auto!important;
+  } */
+  /* .overlay {
+    background-color: rgba(255, 255, 255, 0.85);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+.overlayCancel{
+    z-index: -1;
+} */

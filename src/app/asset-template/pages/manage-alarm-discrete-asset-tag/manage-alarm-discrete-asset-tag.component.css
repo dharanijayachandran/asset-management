@@ -1,0 +1,16 @@
+.table{
+    display:table!important;
+    min-width: 100%;
+    table-layout:fixed!important;
+  }
+  .table th, .table td{
+    display:table-cell!important;
+    width: 200px!important;
+  }
+  
+   
+  
+/*   div.table-responsive{
+      overflow-x: auto!important;
+  }
+   */

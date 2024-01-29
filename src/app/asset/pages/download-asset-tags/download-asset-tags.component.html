@@ -1,0 +1,230 @@
+<div class="row margin_0px rowBox margin_top_5px">
+    <!-- end page-header -->
+    <div class="col-md-12 padding_0px">
+        <div class="padding_Form">
+            <form [formGroup]="analogAlarmForm" (ngSubmit)="filterDataSource()">
+                <div class="formBodyCustom1" id="">
+                    <div class="form-group-custom1">
+                        <div class="m-form__group row">
+                            <div class="col-lg-6">
+                                <label i18n="Tab|Asset Name@@assetName" class="">Asset Name</label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="assetName" class="form-control m-input"
+                                        readonly>
+                                </div>
+
+                                <label i18n="Tab|Tag Type@@tagType" class="">Tag Type</label>
+                                <div class="form-group">
+                                    <select formControlName="tagType" class="form-control m-input"
+                                        (change)="validateTheForm()">
+                                        <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                                        <option [ngValue]="type.id" *ngFor="let type of tagTypes">{{type.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-6">
+                                <label i18n="Tab|Asset Id@@assetId" class="">Asset Id</label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="assetId" class="form-control m-input" readonly>
+                                </div>
+                                <div class="row m-0">
+                                    <label i18n="Tab|Asset Id@@assetId" class="invisible col-md-12">INPUT-OUT</label>
+                                    <div class="col-lg-4 col-md-1">
+                                        <label i18n="Input Enabled|Input Enabled@@inputEnabled" class=""
+                                            style="display: block;">Input
+                                            Enabled</label>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <mat-checkbox i18n="@@isInputEnabled" (change)="validateTheForm()"
+                                            formControlName="isInputEnabled"></mat-checkbox>
+                                    </div>
+                                    <div class="col-lg-4 col-md-1 offset-1" style="min-width : 110px!important">
+                                        <label i18n="Output Enabled|Output Enabled@@outputEnabled" class=""
+                                            style="display: block;">Output
+                                            Enabled</label>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <mat-checkbox i18n="@@outputExpanded" formControlName="isOutputEnabled"
+                                            (change)="validateTheForm()"></mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="path finalLine"></div>
+                    <div class="row" style="    text-align: right;padding: 23px 0;">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-secondary text-center resetActionButton"
+                                [disabled]="!analogAlarmForm.dirty && analogAlarmForm.pristine || !analogAlarmForm.dirty && !analogAlarmForm.pristine"
+                                (click)="clearFilter()" i18n="Reset Filter button|Reset@@reset"> Reset
+                            </button>
+                            &nbsp;
+                            <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                                matTooltip="Select atleast one field" [matTooltipDisabled]="analogAlarmForm.valid">
+                                <a>
+                                    <button i18n="Filter button|Filter@@filter"
+                                        class="btn btn-primary text-center filterButton" type="submit" [disabled]="!analogAlarmForm.dirty && analogAlarmForm.pristine || 
+                                        !analogAlarmForm.dirty && !analogAlarmForm.pristine || !analogAlarmForm.valid">
+                                        View</button>
+                                </a>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div>
+                <div class="container mat-elevation-z8 panel panel-inverse mb-0" style="position: relative">
+
+                    <app-panel-user i18n-name="Panel header|List of Asset Tags@@listofAssetTags"
+                        name="List of Asset Tags" #panelHeader
+                        (refreshTableList)="refreshTableListFunction();panelHeader.setTableDasourceAsDefault(this.dataSource)"
+                        (scrollBarDirective)="onPaginateViewScrollToTop()">
+
+
+                        <!-- Download files as Excel, PDF, CSV -->
+                        <span downloadButton class="ml-2 d-inline-block" *ngIf="dataSource && dataSource.data.length">
+                            <app-export-files-to (exportedTo)="downloadFile($event)"></app-export-files-to>
+                        </span>
+
+                        <a backButton href="javascript:;" i18n-matTooltip="Back button|Back to Asset@@backToAsset"
+                            matTooltip="Back to Asset" class="btn btn-xs btn-icon btn-circle btn-default backButton"
+                            (click)="backToAsset()">
+                            <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        </a>
+                        <!-- Input field for search -->
+                        <input searchfield style="display: none;" id="filter" class="form-control m-input ml-2"
+                            (keyup)="panelHeader.applyFilter($event.target.value, dataSource)"
+                            i18n-placeholder="Search|Search placeholder@@search" matInput placeholder="Search.." />
+
+                        <!-- Search button -->
+                        <a searchButton href="javascript:;"
+                            i18n-matTooltip="Search button|Click to Search@@ClickToSearch" matTooltip="Click to Search"
+                            class="btn btn-xs btn-icon btn-circle btn-default"
+                            (click)="panelHeader.searchButton(this.dataSource)">
+                            <i class="fa fa-search"></i>
+                        </a>
+
+                        <div class="position-relative">
+                            <div class="ps position-relative"
+                                [ngClass]="{'firstLeveltabTable':this.dataSource.filteredData.length!=0}"
+                                appScrollbarDirective *ngIf="dataSource && dataSource.data.length">
+                                <ng-container *ngTemplateOutlet="matTable"></ng-container>
+                            </div>
+
+                            <div class="table-responsive" *ngIf="!dataSource || !dataSource.data.length">
+                                <ng-container *ngTemplateOutlet="matTable"></ng-container>
+                            </div>
+
+                            <div *ngIf="showLoaderImage" class="col-lg-12"
+                                style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+                                <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%"
+                                    alt="Loading........">
+                            </div>
+                            <h3 i18n="No records found text|No records found@@noRecordsFound"
+                                *ngIf="NoRecordsFound || (dataSource.filteredData.length==0 && !showLoaderImage)"
+                                class="text-center noRecordsFound">
+                                No records found!
+                            </h3>
+                            <app-mat-table-paginator [dataSource]="this.dataSource" #myPaginatorChildComponent
+                                (paginator)="matTablePaginator($event)"
+                                (scrollBarDirective)="onPaginateViewScrollToTop()">
+                            </app-mat-table-paginator>
+
+                            <!-- Gateway Template List Mode ends here -->
+                        </div>
+
+                        <ng-template #matTable>
+                            <table mat-table [dataSource]="dataSource" class="table table-striped table-bordered"
+                                matSort>
+
+                                <ng-container matColumnDef="select">
+                                    <th mat-header-cell mat-header-cell *matHeaderCellDef>
+                                        <div class="d-flex">
+                                            <mat-checkbox matTooltip="{{checkBoxToolTip}}"
+                                                (change)="$event ? masterToggle() : null"
+                                                [checked]="selection.hasValue() && isAllSelected()"
+                                                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                [aria-label]="checkboxLabel()">
+                                            </mat-checkbox>
+                                            
+                                        </div>
+                                    </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                            (change)="$event ? selection.toggle(element) : null"
+                                            [checked]="selection.isSelected(element)"
+                                            [aria-label]="checkboxLabel(element)">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="name">
+                                    <th i18n="Table|Name@@name" mat-header-cell *matHeaderCellDef mat-sort-header>Name
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="id">
+                                    <th i18n="Table|Tag Id@@tagId" mat-header-cell *matHeaderCellDef mat-sort-header>Tag
+                                        Id
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="tagTypeName">
+                                    <th i18n="Table|Tag Type@@tagType" mat-header-cell *matHeaderCellDef
+                                        mat-sort-header>Tag
+                                        Type</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.tagTypeName}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="dataTypeName">
+                                    <th i18n="Table|Data Type@@dataType" mat-header-cell *matHeaderCellDef
+                                        mat-sort-header>
+                                        Data Type</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.dataTypeName}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="engUnitName">
+                                    <th i18n="Table|Engineering Unit@@engineeringUnit" mat-header-cell *matHeaderCellDef
+                                        mat-sort-header>
+                                        Engineering Unit </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.engUnitName}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="isInputEnabledString">
+                                    <th i18n="Table|Input Enabled@@inputEnabled" mat-header-cell *matHeaderCellDef
+                                        mat-sort-header> Input Enabled
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.isInputEnabledString}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="isOutputEnabledString">
+                                    <th i18n="Table|Output Enabled@@outputEnabled" mat-header-cell *matHeaderCellDef
+                                        mat-sort-header> Output
+                                        Enabled </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.isOutputEnabledString}} </td>
+                                </ng-container>
+
+
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </ng-template>
+                    </app-panel-user>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="getAssetTags()">
+</app-modal-notification>

@@ -1,0 +1,173 @@
+<!-- Click to view preview starts here -->
+
+
+<div *ngIf="!showLoaderImage" class="row margin_0px rowBox margin_top_5px">
+  <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+      <div class="formReadMode">
+        <div class="form-group-custom1">
+          <legend i18n="Page header|Asset Information@@assetInformation" class="m-b-15">Asset Information</legend>
+          <div style="text-align-last: right;">
+            <a class="" (click)="updateAsset()">
+              <i class="fas fa-md fa-fw m-r-10 fa-edit" alt="edit"
+                i18n-matTooltip="Edit button|Click to Edit tooltip@@clickToEdit" matTooltip="Click to Edit"></i>
+            </a>
+            <a (click)="manageAssetTags()">
+              <i class="fas fa-md fa-fw m-r-10 fa-share-square" alt="Manage Asset Tags"
+                i18n-matTooltip="Manage Asset Tags button|Click to Manage Asset Tags@@clickToManageAssetTags"
+                matTooltip="Click to Manage Asset Tags"></i>
+            </a>
+            <a (click)="downloadAssetTags()">
+              <i class="fas fa-md fa-fw m-r-10 fa-download" alt="Download Asset Tags"
+                i18n-matTooltip="Download Asset Tags button|Click to Download Asset Tags@@clickToDownloadAssetTags"
+                matTooltip="Click to Download Asset Tags"></i>
+            </a>
+            <a class="" (click)="deleteAsset()">
+              <i class="fas fa-md fa-fw m-r-10 fa-trash-alt" alt="delete"
+                i18n-matTooltip="Delete button|Click to Delete tooltip@@clickToDelete" matTooltip="Click to Delete"></i>
+            </a>
+          </div>
+          <!-- Injecting read view -->
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Name|Name@@name" class="">Name</label>
+              <p>
+                {{asset.name | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Description|Description@@description" class="">Description</label>
+              <p>
+                {{asset.description | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Asset Category|Asset Category@@assetCategory" class="">Asset Category</label>
+              <p>
+                {{asset.assetCategoryName | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Asset Type|Asset Type@@assetType" class="">Asset Type</label>
+              <p>
+                {{asset.assetTypeName | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Asset Template|Asset Template@@assetTemplateNoInp" class="">Asset Template</label>
+              <p>
+                {{asset.assetTemplateName | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Gateway|Gateway@@gateway" class="">Gateway</label>
+              <p>
+                {{gatewayName| hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="GPS Tracking Enabled|GPS Tracking Enabled@@isGPSTrackingEnabled" class="">GPS Tracking
+                Enabled</label>
+              <p ng>
+                {{asset.isGPSTrackingEnabled ? "Yes": "No"}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Geospatial Object Type|Geospatial Object Type@@geospatialObjectType" class="">Geospatial
+                Object Type</label>
+              <p>
+                {{asset.geospatialObjectTypeName | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Geospatial Coordinates|Geospatial Coordinates@@geospatialCoordinates" class="">Geospatial
+                Coordinates</label>
+              <p>
+                {{asset.geospatialCoordinates | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Rt Data Sharing Enabled|Rt Data Sharing Enabled@rtDataSharingEnabled">Real Time Data
+                Sharing Enabled
+              </label>
+              <p ng>
+                {{asset.isRtDataSharingEnabled ? "Yes": "No"}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Rt Data Sharing Topic|Rt Data Sharing Topic@@rtDataSharingTopic*" class="">Real Time Data Sharing
+                Topic</label>
+              <p>
+                {{asset.rtDataSharingTopic | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Asset Order|Asset Order@@assetOrder*" class="">Asset Order</label>
+              <p>
+                {{asset.assetOrder | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Status|Status@@status" class="">Status</label>
+              <p>
+                {{asset.status | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="timeZoneName|timeZoneName@@timeZoneName" class="">Time Zone</label>
+              <p>
+                {{asset.timeZoneId | hyphen}}
+              </p>
+            </div>
+          </div>
+          <div>
+            <span *ngIf="asset.assetParams">
+              <legend i18n="Header|List of Asset Paramaters@@listOfAssetParamaters" class="m-b-15">List of Asset
+                Paramaters</legend>
+              <div class="form-row" *ngFor="let param of asset.assetParams">
+                <ng-container *ngIf="param.status != 'Deleted'">
+                  <div class="form-group col-sm-6 col-md-3">
+                    <label i18n="Parameter Name|Parameter Name@@parameterName" class="">Parameter Name</label>
+                    <p>
+                      {{param.name | hyphen}}
+                    </p>
+                  </div>
+                  <div class="form-group col-sm-6 col-md-3">
+                    <label i18n="Description|Description@@description" class="">Description</label>
+                    <p>
+                      {{param.description | hyphen}}
+                    </p>
+                  </div>
+                  <div class="form-group col-sm-6 col-md-3">
+                    <label i18n="Value|Value@@value" class="">Value</label>
+                    <p>
+                      {{param.value | hyphen}}
+                    </p>
+                  </div>
+                  <div class="form-group col-sm-6 col-md-3">
+                    <label i18n="Eng Unit|Eng Unit@@engUnit" class="">Eng Unit</label>
+                    <p>
+                      {{param.engUnitName | hyphen}}
+                    </p>
+                  </div>
+                </ng-container>
+              </div>
+            </span>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Click to preview roles ends here -->
+
+<div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+
+<!-- Global modal notification component selector  for deletion and after deletetion success, success with failed-->
+<app-modal-notification (modelNotificationDanger)="confirmDelete();" (modelNotificationSuccess)="redirectTo()">
+</app-modal-notification>

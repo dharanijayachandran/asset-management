@@ -1,0 +1,435 @@
+<div class="row margin_0px rowBox margin_top_5px">
+  <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+      <form [formGroup]="AssetForm" novalidate (ngSubmit)="previewMode()">
+        <legend i18n="Page header|Asset Details@@assetDetails" class="m-b-15"> Asset Details</legend>
+        <div class="formBodyCustom1" id="">
+          <div class="form-group-custom1">
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Asset From|Asset From@@sssetFrom">Asset From</label>
+                <div class="form-group">
+                  <mat-radio-group formControlName="isTemplate">
+                    <mat-radio-button value="Template" i18n="Radio button|Template@@template"
+                      style="margin-right: 20px;" name="template">
+                      Template
+                    </mat-radio-button>
+                    <mat-radio-button value='No-Template' disabled matTooltip=""
+                      i18n="Radio button|No-Template|@@noTemplate" name="template">
+                      No-Template</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Time Zone|Time Zone@@timeZoneId" class="">Time Zone</label>
+                  <span class="text-danger">*</span>
+                  <div class="form-group">
+                          <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0"
+                      name="timeZoneId" formControlName="timeZoneId" [dataSource]='timeZoneData'
+                      [placeholder]='watermark' [fields]='fields' [popupHeight]='height' [sortOrder]="sortDropDown"
+                      [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                      (change)='timeZoneOnChange($event)' [locale]='locale' ></ejs-dropdownlist> 
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Name|Name@@name*" class="">Name<span class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((AssetForm.get('name').touched ||
+                              AssetForm.get('name').dirty) &&
+                              AssetForm.get('name').errors)}">
+                    <input (keyup)="onKey($event)" type="text" id="tenantFullName" formControlName="name"
+                      class="form-control m-input"
+                      i18n-placeholder="Asset Name placeholder|Enter Asset Name@@assetName.placeholder"
+                      placeholder="Enter Asset Name">
+                    <span class="help-block" *ngIf="((AssetForm.get('name').touched ||
+                                        AssetForm.get('name').dirty) &&
+                                        AssetForm.get('name').errors)">
+                      <span i18n="Message|Please enter Asset Name@@assetName.message"
+                        *ngIf="(AssetForm.get('name').errors.required || AssetForm.get('name').errors.whitespace)">
+                        Please enter Asset Name
+                      </span>
+                      <span i18n="Message|Please enter valid Characters@@assetName.message3"
+                        *ngIf="AssetForm.get('name').errors.pattern">
+                        Please enter valid Characters
+                      </span>
+                      <span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <label i18n="Parent Asset|Parent Asset@@parentAsset">Parent Asset</label>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-10 fetchparentname">
+                      <input type="text" [readonly]="!editable" formControlName="refAssetId" 
+                        class="form-control m-input">
+                    </div>
+                    <div class="col-md-2">
+                      <a class="fetchbtn" i18n-matTooltip="@@Fetchparent" matTooltip="{{FetchparentToolTip}}"
+                        [matTooltipDisabled]="fetchParentButton">
+                        <button style="height: 30px;" type="button" [disabled]="fetchParentButton"
+                          class="btn btn-primary text-center btn-sm" (click)="fetchParent()">
+                          <i class="fa fa-redo"></i>
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Description|Description@@description" class="">Description</label>
+                <div class="form-group">
+                  <textarea type="text" id="description" formControlName="description"
+                    class="form-control m-input textAreaHeight"
+                    i18n-placeholder="Description placeholder|Enter Description@@description.placeholder"
+                    placeholder="Enter Description"></textarea>
+                </div>
+              </div>
+
+            </div>
+            <div class="m-form__group row">
+
+
+              <div class="col-lg-6">
+                <label i18n="Access Category|Access Category@@accessCategory" class="">Asset Category<span
+                    class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((AssetForm.get('assetCategoryId').touched ||
+                    AssetForm.get('assetCategoryId').dirty) &&
+                    AssetForm.get('assetCategoryId').errors)}">
+              
+                    <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='assetCategoryId'
+                    name="assetCategoryId" formControlName="assetCategoryId" [dataSource]='assetCategory'
+                    [placeholder]='assetCategoryWaterMark' [fields]='assetCategoryFields' [popupHeight]='height'
+                    [sortOrder]="sortDropDown" (filtering)='onFilteringAssetCategory($event)'
+                    [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                    (change)='assetCategoryChange($event)' [locale]='locale'></ejs-dropdownlist>
+                    <span class="help-block" *ngIf="((AssetForm.get('assetCategoryId').touched ||
+                                        AssetForm.get('assetCategoryId').dirty) &&
+                                        AssetForm.get('assetCategoryId').errors)">
+                      <span i18n="Message|Please select Asset Category@@assetCategory.message"
+                        *ngIf="AssetForm.get('assetCategoryId').errors.required">
+                        Please select Asset Category
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Access Type|Access Type@@accessType" class="">Asset Type</label>
+                <div class="form-group">
+            
+                  <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='typeId'
+                  name="typeId" formControlName="typeId" [dataSource]='assetTypeByCategorys'
+                  [placeholder]='assetTypeWaterMark' [fields]='assetTypeFields' [popupHeight]='height'
+                  [sortOrder]="sortDropDown" (filtering)='onFilteringAssetType($event)'
+                  [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                  (change)='assetTypeChange($event)' [locale]='locale'></ejs-dropdownlist>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Asset Template|Asset Template@@assetTemplateNoInp*" class="">Asset Template</label>
+                <div class="form-group">
+                  <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='assetTemplateId'
+                    name="assetTemplateId" formControlName="assetTemplateId" [dataSource]='assetTemplate'
+                    [placeholder]='assetTemplateWaterMark' [fields]='assetTemplateFields' [popupHeight]='height'
+                    [sortOrder]="sortDropDown" (filtering)='onFilteringAssetTemplates($event)'
+                    [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                    (change)='assetTemplateChange($event.itemData.id,true)' [locale]='locale'></ejs-dropdownlist>
+                 
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Gateway|Gateway@@gateway*" class="">Gateway</label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((AssetForm.get('gateWayTemplateId').touched ||
+                  AssetForm.get('gateWayTemplateId').dirty) &&
+                  AssetForm.get('gateWayTemplateId').errors)}">
+                    <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='gateWayTemplateId'
+                      name="gateWayTemplateId" formControlName="gateWayTemplateId" [dataSource]='gatewayTemplate'
+                      [placeholder]='gatewayTemplateWaterMark' [fields]='gatewayTemplateFields' [popupHeight]='height'
+                      [sortOrder]="sortDropDown" (filtering)='onFilteringGatewayTemplates($event)'
+                      [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                      (change)='getGatewayName($event)' [locale]='locale'></ejs-dropdownlist>
+               
+                    <span class="help-block" *ngIf="((AssetForm.get('gateWayTemplateId').touched ||
+                  AssetForm.get('gateWayTemplateId').dirty) &&
+                  AssetForm.get('gateWayTemplateId').errors)">
+                      <span i18n="Message|Please select Gateway@@gateway.message"
+                        *ngIf="AssetForm.get('gateWayTemplateId').errors.required">
+                        Please select Gateway
+                      </span>
+                      <span i18n="Message|No gateway is associated with Selected Asset template@@gateway.message1"
+                        *ngIf="AssetForm.get('gateWayTemplateId').errors.requiredTrue">
+                        No gateway is associated with Selected Asset template
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="IS GPS Tracking Enable|IS GPS Tracking Enable@isGPSTracingEnabled">GPS
+                  Tracking Enabled
+                </label>
+                <div class="form-group">
+                  <mat-checkbox #checkbox="matCheckbox" formControlName="isGPSTrackingEnabled"
+                    (click)="isGPSTracingEnabledCheckBox(checkbox)" color='primary' [checked]='isGPSTracingEnabled'>
+                  </mat-checkbox>
+                </div>
+                <label i18n="Geospatial Object Type|Geospatial Object Type@@geospatialObjectType" class="">Geospatial
+                  Object Type</label>
+                <div class="form-group">
+                  <select [attr.disabled]="enableGeospatialObjectType ? true : null"
+                    formControlName="geospatialObjectType"
+                    class="form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let geospatialObjectType of geospatialObjectTypes|orderByAlphabetical:'name'"
+                      [value]=geospatialObjectType.id>{{geospatialObjectType.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Geospatial Coordinates|Geospatial Coordinates@@geospatialCoordinates">Geospatial
+                  Coordinates</label>
+                <a id="popUpWindow" (click)="coordinatesHelp()">
+                  <i class="fas fa-md fa-fw m-r-10 fa-question-circle" alt="Help" matTooltip="Help"></i>
+                </a>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((AssetForm.get('geospatialCoordinates').touched ||
+                  AssetForm.get('geospatialCoordinates').dirty) &&
+                  AssetForm.get('geospatialCoordinates').errors)}">
+                    <textarea type="text" id="geospatialCoordinates" (focusout)="ValidateGeospatialCoordinates()"
+                      formControlName="geospatialCoordinates" class="form-control m-input textAreaHeight"
+                      i18n-placeholder="Geospatial Coordinates placeholder|Enter Geospatial Coordinates@@geospatialCoordinates.placeholder"
+                      placeholder="Enter Geospatial Coordinates"></textarea>
+                    <span class="help-block" *ngIf="((AssetForm.get('geospatialCoordinates').touched ||
+                      AssetForm.get('geospatialCoordinates').dirty) &&
+                      AssetForm.get('geospatialCoordinates').errors)">
+                      <span i18n="Message|Please provide valid coordinates@@gateway.message"
+                        *ngIf="AssetForm.get('geospatialCoordinates').errors.required">
+                        Please provide valid coordinates
+                      </span>
+                      <span
+                        i18n="Message|In polygon start and end coordinates should be same@@polygonValidation.message"
+                        *ngIf="AssetForm.get('geospatialCoordinates').errors.polygonValidation">
+                        In polygon start and end coordinates should be same.
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Rt Data Sharing Enabled|Rt Data Sharing Enabled@rtDataSharingEnabled">Real Time Data
+                  Sharing Enabled
+                </label>
+                <div class="form-group">
+                  <mat-checkbox formControlName="isRtDataSharingEnabled" (change)="RtDataSharingENableChange($event)" color='primary'>
+                  </mat-checkbox>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Rt Data Sharing Topic|Rt Data Sharing Topic@@rtDataSharingTopic*" class="">Real Time Data Sharing
+                  Topic</label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((AssetForm.get('rtDataSharingTopic').touched ||
+                  AssetForm.get('rtDataSharingTopic').dirty) &&
+                  AssetForm.get('rtDataSharingTopic').errors)}">
+                    <ejs-dropdownlist id='ddlelement' [readonly]="!AssetForm.get('isRtDataSharingEnabled').value"
+                      #ddlelement class="form-control p-0" [value]='rtDataSharingTopic' name="rtDataSharingTopic"
+                      formControlName="rtDataSharingTopic" [dataSource]='rtDataSharingTopics'
+                      [placeholder]='rtDataSharingTopicWaterMark' [fields]='rtDataSharingTopicFields'
+                      [popupHeight]='height' [sortOrder]="sortDropDown"
+                      (filtering)='onFilteringRtDataSharingTopic($event)' [filterBarPlaceholder]="filterPlaceholder"
+                      [allowFiltering]='true' [locale]='locale'></ejs-dropdownlist>
+                    <span class="help-block" *ngIf="((AssetForm.get('rtDataSharingTopic').touched ||
+                      AssetForm.get('rtDataSharingTopic').dirty) &&
+                      AssetForm.get('rtDataSharingTopic').errors)">
+                      <span i18n="Message|Please enter Real Time Data Sharing Topic@@assetName.message3"
+                        *ngIf="AssetForm.get('rtDataSharingTopic').errors.required">
+                        Please select Real Time Data Sharing Topic
+                      </span>
+                      <span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Asset Order|Asset Order@@assetOrder*" class="">Asset Order</label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((AssetForm.get('assetOrder').touched ||
+                              AssetForm.get('assetOrder').dirty) &&
+                              AssetForm.get('assetOrder').errors)}">
+                    <input type="text" formControlName="assetOrder" class="form-control m-input"
+                      i18n-placeholder="Asset Order placeholder|Enter Asset Order@@assetOrder.placeholder"
+                      placeholder="Enter Asset Order">
+                    <span class="help-block" *ngIf="((AssetForm.get('assetOrder').touched ||
+                                        AssetForm.get('assetOrder').dirty) &&
+                                        AssetForm.get('assetOrder').errors)">
+                      <span i18n="Message|Please enter only numbers@@pleaseEnterOnlyNumbers.message"
+                        *ngIf="(AssetForm.get('assetOrder').errors.pattern)">
+                        Please enter only numbers.
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Status|Status@@status">Status</label>
+                <div class="form-group">
+                  <mat-radio-group formControlName="status">
+                    <mat-radio-button value="Active" i18n="Radio button|Active@@active" style="margin-right: 20px;" name="isstatus">
+                      Active
+                    </mat-radio-button>
+                    <mat-radio-button value="In_Active" i18n="Radio button|InActive@@inActive" name="isstatus">In-Active
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </div>
+            <div class="container mat-elevation-z8 panel panel-inverse mb-4">
+              <app-panel-user class="panel-header"
+                i18n-name="Panel header|List of Asset Parameters@@listOfAssetParamters" name="List of Asset Parameters"
+                #panelHeader (refreshTableList)="refreshTableListFunction()">
+                <!-- Add New button -->
+                <a addNewButton i18n="@@AddParameter" (click)="addRow()"
+                  i18n-matTooltip="AddNew button tooltip|Click to Add New@@addParamater"
+                  matTooltip="Click to Add Paramater" class="btn btn-xs btn-icon btn-circle btn-warning">
+                  <i class="fa fa-plus"></i>
+                </a>
+
+                <div class="position-relative">
+                  <div class="table-responsive ps position-relative" appScrollbarDirective
+                    *ngIf="dataSource && dataSource.data.length">
+                    <table mat-table [dataSource]="dataSource" class="table table-striped table-bordered columnSize"
+                      formArrayName="assetParams">
+                      <!-- Row definitions -->
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                      <tr mat-row *matRowDef="let element; let i = index; columns: displayedColumns;"></tr>
+
+                      <ng-container matColumnDef="name">
+                        <th i18n="Table|Name@@name" mat-header-cell *matHeaderCellDef> Name<span
+                            class="text-danger">*</span> </th>
+                        <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                          <div [ngClass]="{'has-error': ((AssetForm.get('assetParams')['controls'][i].get('name').touched ||
+                     AssetForm.get('assetParams')['controls'][i].get('name').dirty) &&
+                     AssetForm.get('assetParams')['controls'][i].get('name').errors)}">
+                            <input type="text" formControlName="name"
+                              i18n-placeholder="Paramater placeholder|Enter Parameter Name@@assetParams.placeholder"
+                              placeholder="Enter Parameter Name" class="form-control">
+                            <span class="help-block" *ngIf="((AssetForm.get('assetParams')['controls'][i].get('name').touched ||
+                         AssetForm.get('assetParams')['controls'][i].get('name').dirty) &&
+                         AssetForm.get('assetParams')['controls'][i].get('name').errors)"><span
+                                i18n="Message|Name is required@@assetParams.message"
+                                *ngIf="AssetForm.get('assetParams')['controls'][i].get('name').errors.required">
+                                Name is required
+                              </span>
+                            </span>
+                          </div>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="description">
+                        <th i18n="Table|Description@@description" mat-header-cell *matHeaderCellDef> Description</th>
+                        <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                          <input type="text" formControlName="description"
+                            i18n-placeholder="Description placeholder|Enter Description@@description.placeholder"
+                            placeholder="Enter Description" class="form-control">
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="value">
+                        <th i18n="Table|Value@@value" mat-header-cell *matHeaderCellDef> Value </th>
+                        <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                          <input type="text" formControlName="value"
+                            i18n-placeholder="Value placeholder|Enter Value@@value.placeholder"
+                            placeholder="Enter Value" class="form-control">
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="engUnit">
+                        <th i18n="Table|Eng Unit@@engUnit" mat-header-cell *matHeaderCellDef> Eng Unit</th>
+                        <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                          <select formControlName="engUnitId" class="form-control m-input">
+                            <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                            <option *ngFor="let engUnit of engUnits | orderByAlphabetical:'name'"
+                              [ngValue]="engUnit.id">
+                              {{engUnit.name}}</option>
+                          </select>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="action">
+                        <th i18n="Table|Action@@action" mat-header-cell *matHeaderCellDef> Action</th>
+                        <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                          <a class="" (click)="deleteAssetParameter(element, i)">
+                            <i class="fas fa-md fa-fw m-r-10 fa-trash-alt" alt="delete"
+                              i18n-matTooltip="Delete button|Click to Delete tooltip@@clickToDelete"
+                              matTooltip="Click to Delete"></i>
+                          </a>
+                        </td>
+                      </ng-container>
+
+                    </table>
+                  </div>
+                  <h3 i18n="@@Norecordsfound" *ngIf="dataSource && !dataSource.data.length"
+                    class="text-center noRecordsFound">
+                    No records found!
+                  </h3>
+                </div>
+
+              </app-panel-user>
+
+
+
+            </div>
+          </div>
+
+
+          <div class="path finalLine"></div>
+          <div class="row" style="    text-align: right;padding: 23px 0;">
+            <div class="col-md-12">
+              <a (click)="cancelForm($event)">
+                <button type="button" id="cancelForm" class="btn btn-default text-center cancelActionButton"
+                  i18n="Cancel button|Cancel@@cancel"> Cancel
+                </button>
+              </a>
+              &nbsp;
+              <button type="button" class="btn btn-secondary text-center resetActionButton" *ngIf="!parentAssetLoaderResetButton"
+                [disabled]="!AssetForm.dirty && AssetForm.pristine || !AssetForm.dirty && !AssetForm.pristine"
+                (click)="resetForm()" i18n="Reset button|Reset@@reset"> Reset
+              </button>
+              <button type="button" class="btn btn-secondary text-center resetActionButton" *ngIf="parentAssetLoaderResetButton"
+                (click)="resetForm()" i18n="Reset button|Reset@@reset"> Reset
+              </button>
+              &nbsp;
+              <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                matTooltip="Fill the mandatory fields" [matTooltipDisabled]="AssetForm.valid">
+                <a>
+                  <button i18n="Review&Save button|Review&Save@@review&Save"
+                    class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                    [disabled]="!AssetForm.valid">
+                    Review & Save</button>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--  asset forms view ends here -->
+
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="alertRedirection()" (modelNotificationDanger)="confirmDelete()">
+</app-modal-notification>

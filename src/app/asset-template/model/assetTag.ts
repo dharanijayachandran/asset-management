@@ -1,0 +1,42 @@
+import { AnalogTag } from './analogTag ';
+import { AssetOutputEnabledAssetAnalogTag } from './assetOutputEnabledAssetAnalogTag';
+import { AssetInputEnabledAssetAnalogTag } from './assetInputEnabledAssetAnalogTag';
+import { AssetTagDiscreteState } from './assetTagDiscrete';
+import { AssetInputGateWayIOTagDiscrete } from './assetInputGateWayIOTagDiscrete';
+import { AssetOutputGateWayIOTagDiscrete } from './assetOutputGateWayIOTagDiscrete';
+import { AssetGatewayIoTagDiscrete } from './assetGatewayIoTagDiscrete';
+
+export class AssetTag {
+  id: number;
+  name: string;
+  description: string;
+  assetId: number;
+  assetTemplateTagId: number;
+  tagType: string;
+  dataTypeId: number;
+  engUnitId: number;
+  assetStandardTagId:number;
+  isInputEnabled: boolean;
+  isOutputEnabled: boolean;
+  createdBy: number;
+  updatedBy: number;
+  status: string;
+  isSelected: boolean;
+  gatewayITagId: number;
+  gatewayOTagId: number;
+  analogTag: AnalogTag[];
+  assetTagDiscreteState: AssetTagDiscreteState[];
+  assetInputGatewayIoTagAnalog: AssetInputEnabledAssetAnalogTag;
+  assetOutputGatewayIoTagAnalog: AssetOutputEnabledAssetAnalogTag;
+  assetGatewayInputTagDiscrete: AssetInputGateWayIOTagDiscrete[];
+  assetGatewayOutputTagDiscrete: AssetOutputGateWayIOTagDiscrete[];
+  assetGatewayIoTagDiscrete:AssetGatewayIoTagDiscrete[];
+  dataTypeName: string;
+  engUnitName: string;
+  gatewayIOTagName: string;
+  discreteStateName: string;
+  assetTemplateName: string;
+  orgAssetStandardTagName:string;
+  orgAssetStandardTagId: number;
+  displayOrder:number;
+}

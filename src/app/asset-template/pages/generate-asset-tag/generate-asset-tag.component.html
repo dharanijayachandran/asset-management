@@ -1,0 +1,158 @@
+
+<!--  for name
+List of Gateway I/O Tags[{{assetTamplateDetail.gatewayTemplateName}}] to genarate tags for[{{assetTamplateDetail.name}}]
+-->
+<form [formGroup]="GenerateTagForm">
+<div class="row margin_0px">
+  <div class="col-md-12 padding_0px">
+    <div class="formReadMode">
+      <div class="form-group-custom1">
+        <div class="container mat-elevation-z8 panel panel-inverse mb-0" style="position: relative">
+          <app-panel-user
+            i18n-name="Panel header|List of Input/Output Tags to generate Asset Template Tags@@listOfI/OTagsToGenerateAssetTemplateTags"
+            name="List of I/O Tags to generate Asset Template Tags" #panelHeader
+            (refreshTableList)="refreshTableListFunction()">
+            <!-- Input field for search -->
+            <input searchfield style="display: none;" id="filter" class="form-control m-input ml-2"
+              (keyup)="panelHeader.applyFilter($event.target.value, dataSource)"
+              i18n-placeholder="Search|Search placeholder@@search" matInput placeholder="Search.." />
+
+            <!-- Search button -->
+            <a searchButton href="javascript:;" i18n-matTooltip="Search button|Click to Search@@ClickToSearch"
+              matTooltip="Click to Search" class="btn btn-xs btn-icon btn-circle btn-default"
+              (click)="panelHeader.searchButton(this.dataSource)">
+              <i class="fa fa-search"></i>
+            </a>
+            <!-- Back button -->
+            <a backButton href="javascript:;" i18n-matTooltip="Back button|Back to AssetTemplate@@backToAssetTemplate"
+              matTooltip="Back to Asset Template" class="btn btn-xs btn-icon btn-circle btn-default backButton"
+              (click)="backToAssetTemplate()">
+              <i class="fa fa-angle-left" aria-hidden="true"></i>
+            </a>
+            <div class="position-relative">
+              <div class="ps position-relative"
+                [ngClass]="{'secondLeveltabTable':this.dataSource.filteredData.length!=0}" appScrollbarDirective
+                *ngIf="dataSource && dataSource.data.length">
+                <ng-container *ngTemplateOutlet="matTable"></ng-container>
+              </div>
+
+              <div class="table-responsive" *ngIf="!dataSource || !dataSource.data.length">
+                <ng-container *ngTemplateOutlet="matTable"></ng-container>
+              </div>
+              <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound"
+                *ngIf="(noRecordBlock && !showLoaderImage) || (dataSource && !dataSource.filteredData.length && !showLoaderImage)">
+                No records found!
+              </h3>
+            </div>
+            <ng-template #matTable>
+
+              <table mat-table [dataSource]="dataSource" formArrayName="AssetStandardTagValues" class="table table-striped table-bordered" matSort>
+                <ng-container matColumnDef="id">
+                  <th i18n="Table id|Sno@@sNo" mat-header-cell *matHeaderCellDef>S.No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index;">
+                    {{i+1}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                  <th i18n="Table|Tag Name@@tagNameTable" mat-header-cell *matHeaderCellDef mat-sort-header>Tag Name
+                  </th>
+                  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="IO Tag Mode">
+                  <th i18n="Table|Tag Name@@IOtagModeTable" mat-header-cell *matHeaderCellDef mat-sort-header>Tag IO
+                    Mode
+                  </th>
+                  <td mat-cell *matCellDef="let element"> {{element.tagIOModeName}} </td>
+                </ng-container>
+                    <ng-container matColumnDef="standard tag">
+                      <th i18n="Table|Tag Name@@tagNameTable" mat-header-cell *matHeaderCellDef mat-sort-header>Asset
+                        Standard Tag
+                      </th>
+                      <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i" style="width: 17rem!important;">
+                        <ejs-dropdownlist [dataSource]="assetStandardTags" [fields]="dataField"
+                            formControlName="standardTag" placeholder="Select a Asset tag" class="form-control" #ASTId
+                            [allowFiltering]='true' [filterBarPlaceholder]="filterPlaceholder" [popupHeight]='height'
+                            [sortOrder]="sortDropDown" (change)="standardTagChange(i,element,$event)">
+                        </ejs-dropdownlist>
+                      </td>
+                    </ng-container>
+
+                <ng-container matColumnDef="engg unit">
+                  <th i18n="Table|Tag Name@@tagNameTable" mat-header-cell *matHeaderCellDef mat-sort-header>Eng Unit
+                  </th>
+                  <td mat-cell *matCellDef="let element;let i = index; "  [formGroupName]="i">
+                    <ejs-dropdownlist [dataSource]="engUnits" [fields]="dataField" formControlName="generateTags"
+                        placeholder="Select a Eng Unit" class="form-control" #ASTId 
+                        [allowFiltering]='true' [filterBarPlaceholder]="filterPlaceholder" [popupHeight]='height'
+                        [sortOrder]="sortDropDown" (change)="enggUnitChange(i,element,$event)">
+                    </ejs-dropdownlist>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="order">
+                  <th mat-header-cell *matHeaderCellDef>Order</th>
+                  <td mat-cell *matCellDef="let element;let i = index; "  [formGroupName]="i">
+                    <input type="number" class="form-control m-input" placeholder="Enter Order" formControlName="order"
+                      [(ngModel)]="element.assetTagDisplayOrder">
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="select">
+                  <th mat-header-cell mat-header-cell *matHeaderCellDef style="width: 5rem!important;">
+                    <mat-checkbox matTooltip="{{checkBoxToolTip}}" (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                  </th>
+                  <td mat-cell *matCellDef="let element" style="width: 5rem!important;">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(element) : null" [checked]="selection.isSelected(element)"
+                      [aria-label]="checkboxLabel(element)">
+                    </mat-checkbox>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+            </ng-template>
+          </app-panel-user>
+
+        </div>
+        <ng-container *ngIf="dataSource && dataSource.data.length">
+          <div class="row" style="    text-align: right;padding: 23px 0 10px;">
+            <div class="col-md-12">
+              <a>
+                <button type="button" id="cancelRole" class="btn btn-default text-center cancelActionButton"
+                  i18n="Cancel button|Cancel@@cancel" (click)="CancelAssetTag()"> Cancel
+                </button>
+              </a>
+              &nbsp;
+              <button type="button" class="btn btn-secondary text-center resetActionButton" (click)="resetAssetTag()"
+                i18n="Reset button|Reset@@reset" [disabled]='dataSource && !_confirmed'> Reset
+              </button>
+              &nbsp;
+              <span i18n-matTooltip="Tooltip validation|Select atleast one Tag@@selectAtleastOneTag"
+                matTooltip="Select atleast one Tag" [matTooltipDisabled]="dataSource && _confirmed">
+                <button i18n="Generate button|Generate@@generate" class="btn btn-primary text-center" type="submit"
+                  (click)="SaveAssetTag()" [disabled]='dataSource && !_confirmed'>
+                  Generate</button>
+              </span>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+  align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="alertRedirection()" (modelNotificationSuccess)="redirectTo()">
+</app-modal-notification>

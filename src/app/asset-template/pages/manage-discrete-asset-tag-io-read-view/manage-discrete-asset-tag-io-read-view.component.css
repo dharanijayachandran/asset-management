@@ -1,0 +1,14 @@
+.table {
+    display: table!important;
+    min-width: 100%;
+    table-layout: fixed!important;
+  }
+
+  /* .table thead th:nth-child(2) {
+    display: none!important;
+  } */
+
+  .table th:first-child {
+    background-image: linear-gradient(to bottom left, transparent calc(50% - 1px), #b6c2c9, transparent calc(50% + 1px))!important;
+    text-align: center;
+  }

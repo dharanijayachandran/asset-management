@@ -1,0 +1,754 @@
+<div class="row margin_0px rowBox">
+  <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+      <!-- Discrete form view starts here  -->
+      <form [formGroup]="analogAlarmForm" *ngIf="alarmForm" (ngSubmit)="previewModeFormData()">
+        <div class="form-group-custom1">
+          <legend i18n="Page header|Limit Alarm Configuration for Analog Asset Tag@@AnalogAlarmHeader" class="m-b-15">
+            Limit Alarm Configuration for Analog Asset Tag</legend>
+          <div class="m-form__group row">
+            <div class="col-lg-4">
+              <label i18n="Asset Tag Name|Asset Tag Name@@assetTagName" class="">Asset Tag Name</label>
+              <div class="form-group">
+                <input type="text" formControlName="assetTagName" readonly class="form-control m-input">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="path"></div>
+        <div>
+          <legend i18n="Header|Alarm Config Details@@alarmConfigDetails" class="m-b-15">Alarm Config Details
+          </legend>
+          <div class="m-form__group row">
+            <div class="col-lg-3">
+              <label i18n="Alarm Name|Alarm Name@@alarmName*" class="">Alarm Name<span
+                  class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((analogAlarmForm.get('name').touched ||
+                                analogAlarmForm.get('name').dirty) &&
+                                analogAlarmForm.get('name').errors)}">
+                  <input type="text" formControlName="name" class="form-control m-input"
+                    i18n-placeholder="Alarm Name placeholder|Enter Alarm Name@@alarmName.placeholder"
+                    placeholder="Enter Alarm Name">
+                  <span class="help-block" *ngIf="((analogAlarmForm.get('name').touched ||
+                                  analogAlarmForm.get('name').dirty) &&
+                                  analogAlarmForm.get('name').errors)">
+                    <span i18n="Message|Please enter Alarm Name@@alarmName.message"
+                      *ngIf="(analogAlarmForm.get('name').errors.required || analogAlarmForm.get('name').errors.whitespace)">
+                      Please enter Alarm Name
+                    </span>
+                    <span i18n="Message|Please enter valid Characters@@alarmName.message1"
+                      *ngIf="analogAlarmForm.get('name').errors.pattern">
+                      Please enter valid Characters
+                    </span>
+                    <span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label i18n="Alarm Type|Alarm Type@@alarmType*" class="">Alarm Type<span
+                  class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((analogAlarmForm.get('alarmTypeId').touched ||
+                      analogAlarmForm.get('alarmTypeId').dirty) &&
+                      analogAlarmForm.get('alarmTypeId').errors)}">
+                  <!-- <select formControlName="alarmTypeId" class="form-control m-input">
+                                        <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                                        <option *ngFor="let type of alarmTypes | orderByAlphabetical:'name'
+                                        " [value]="type.id">{{type.name}}</option>
+                                    </select> -->
+                  <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='alarmTypeId'
+                    name="alarmTypeId" formControlName="alarmTypeId" [dataSource]='alarmTypes'
+                    [placeholder]='alarmTypeWaterMark' [fields]='alarmTypeFields' [popupHeight]='height'
+                    [sortOrder]="sortDropDown" (filtering)='onFilteringAlarmTypes($event)'
+                    [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                    [locale]='locale'></ejs-dropdownlist>
+                  <span class="help-block" *ngIf="((analogAlarmForm.get('alarmTypeId').touched ||
+                                analogAlarmForm.get('alarmTypeId').dirty) &&
+                                analogAlarmForm.get('alarmTypeId').errors)">
+                    <span i18n="Message|Please select Alarm Type@@alarmTypeId.message"
+                      *ngIf="analogAlarmForm.get('alarmTypeId').errors.required">
+                      Please select Alarm Type
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label i18n="Limit|Limit@@limit*" class="">Limit<span class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((analogAlarmForm.get('alarmConditionValue').touched ||
+                                analogAlarmForm.get('alarmConditionValue').dirty) &&
+                                analogAlarmForm.get('alarmConditionValue').errors)}">
+                  <input type="text" formControlName="alarmConditionValue" class="form-control m-input"
+                    i18n-placeholder="Limit placeholder|Enter Limit@@limit.placeholder" placeholder="Enter Limit">
+                  <span class="help-block" *ngIf="((analogAlarmForm.get('alarmConditionValue').touched ||
+                                analogAlarmForm.get('alarmConditionValue').dirty) &&
+                                analogAlarmForm.get('alarmConditionValue').errors)">
+                    <span i18n="Message|Please enter Limit@@alarmConditionValue.message"
+                      *ngIf="analogAlarmForm.get('alarmConditionValue').errors.required">
+                      Please enter Limit
+                    </span>
+                    <span i18n="Message|Please enter Limit@@alarmConditionValue.message"
+                      *ngIf="analogAlarmForm.get('alarmConditionValue').errors.pattern">
+                      Please enter number
+                    </span>
+
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label i18n="Severity|Severity@@alarmSevierity*" class="">Severity<span
+                  class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((analogAlarmForm.get('alarmSevierity').touched ||
+                                analogAlarmForm.get('alarmSevierity').dirty) &&
+                                analogAlarmForm.get('alarmSevierity').errors)}">
+                  <!-- <select formControlName="alarmSevierity" class="form-control m-input">
+                                        <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                                        <option *ngFor="let severity of alarmSeveritys | orderByAlphabetical:'name'"
+                                            [value]="severity.id">
+                                            {{severity.name}}</option>
+                                    </select> -->
+                  <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='alarmSevierity'
+                    name="alarmSevierity" formControlName="alarmSevierity" [dataSource]='alarmSeveritys'
+                    [placeholder]='alarmSevierityWaterMark' [fields]='alarmSevierityFields' [popupHeight]='height'
+                    [sortOrder]="sortDropDown" (filtering)='onFilteringAlarmSevierity($event)'
+                    [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                    [locale]='locale'></ejs-dropdownlist>
+                  <span class="help-block" *ngIf="((analogAlarmForm.get('alarmSevierity').touched ||
+                                analogAlarmForm.get('alarmSevierity').dirty) &&
+                                analogAlarmForm.get('alarmSevierity').errors)">
+                    <span i18n="Message|Please select Alarm Severity@@alarmSevierity.message"
+                      *ngIf="analogAlarmForm.get('alarmSevierity').errors.required">
+                      Please select Alarm Severity
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="m-form__group row">
+            <div class="col-lg-3">
+              <label i18n="Value Deadband|Value Deadband@@valueDeadBand" class="">Value Deadband</label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((analogAlarmForm.get('valueDeadBand').touched ||
+                                analogAlarmForm.get('valueDeadBand').dirty) &&
+                                analogAlarmForm.get('valueDeadBand').errors)}">
+                  <input type="text" (keyup)="alermState(state.value);" #state formControlName="valueDeadBand"
+                    class="form-control m-input" decimals="4"
+                    i18n-placeholder="Value Deadband placeholder|Enter Value Deadband@@valueDeadBand.placeholder"
+                    placeholder="Enter Value Deadband">
+                  <!--  <p *ngIf="numberError" class="text-danger">Please enter only Decimal Numbers</p> -->
+                  <span class="help-block" *ngIf="((analogAlarmForm.get('valueDeadBand').touched ||
+                               analogAlarmForm.get('valueDeadBand').dirty) &&
+                               analogAlarmForm.get('valueDeadBand').errors)">
+                    <span
+                      i18n="Message|Please enter number less than 1000000 and up to 4 decimal places@@valueDeadBand.message1"
+                      *ngIf="analogAlarmForm.get('valueDeadBand').errors.pattern || analogAlarmForm.get('valueDeadBand').errors.maxlength"
+                      class="display_inherit">
+                      Please enter number less than 1000000 and up to 4 decimal places
+                    </span>
+                    <!-- <span i18n="@@ValueDeadBand.message2"
+                                                   *ngIf="analogAlarmForm.get('valueDeadBand').errors.maxlength"
+                                                   class="display_inherit">
+                                                   Please enter only 10 Decimal Numbers
+                                               </span> -->
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 ">
+              <label i18n="Value Deadband|Value Deadband@@valueDeadBand" class="visiblity-hidden">Value
+                Deadband</label>
+              <div class="d-flex align-items-center justify-content-between checkBoxAlign">
+                <div class="d-flex align-items-center">
+                  <mat-checkbox class="mr-2" formControlName="valueDeadBandOnRaise"
+                    [disabled]="stateNameDisableEnableStatus">
+                  </mat-checkbox><label class="labelProtocol mb-0"
+                    i18n="Radio button|On Raise Alarm@valueDeadBandOnRaise">On
+                    Raise Alarm</label>
+                </div>
+                <div class="d-flex align-items-center">
+                  <mat-checkbox class="mr-2" formControlName="valueDeadBandOnClear"
+                    [disabled]="stateNameDisableEnableStatus">
+                  </mat-checkbox><label class="labelProtocol mb-0"
+                    i18n="Radio button|On Clear Alarm@valueDeadBandOnClear">On
+                    Clear Alarm</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label i18n="Time Deadband|Time Deadband(in Sec)@@timeDeadband" class="">Time Deadband (in
+                Sec)</label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((analogAlarmForm.get('timeDeadBandInSec').touched ||
+                                analogAlarmForm.get('timeDeadBandInSec').dirty) &&
+                                analogAlarmForm.get('timeDeadBandInSec').errors)}">
+                  <input type="text" (keyup)="timeDeadBandInSecState(timeDeadBandInSec.value);" #timeDeadBandInSec
+                    formControlName="timeDeadBandInSec" class="form-control m-input"
+                    i18n-placeholder="Time Deadband placeholder|Enter Time Deadband@@timeDeadBandInSec"
+                    placeholder="Enter Time Deadband">
+                  <span class="help-block" *ngIf="((analogAlarmForm.get('timeDeadBandInSec').touched ||
+                        analogAlarmForm.get('timeDeadBandInSec').dirty) &&
+                        analogAlarmForm.get('timeDeadBandInSec').errors)">
+                    <span i18n="Message|Please enter only Numbers@@timeDeadBandInSec.message2"
+                      *ngIf="analogAlarmForm.get('timeDeadBandInSec').errors.pattern" class="display_inherit">
+                      Please enter only Numbers
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label i18n="Time Deadband|Time Deadband(in Sec)@@timeDeadband" class="visiblity-hidden">Time Deadband(in
+                Sec)</label>
+              <div class="d-flex align-items-center justify-content-between checkBoxAlign">
+                <div class="d-flex align-items-center">
+                  <mat-checkbox class="mr-2" formControlName="timeDeadBandOnRaise"
+                    [disabled]="timeDeadDisableEnableStatus">
+                  </mat-checkbox><label class="labelProtocol" i18n="Radio button|On Raise Alarm@timeDeadBandOnRaise">On
+                    Raise Alarm</label>
+                </div>
+                <div class="d-flex align-items-center">
+                  <mat-checkbox class="mr-2" formControlName="timeDeadBandOnClear"
+                    [disabled]="timeDeadDisableEnableStatus">
+                  </mat-checkbox><label class="labelProtocol mb-0"
+                    i18n="Radio button|On Clear Alarm@timeDeadBandOnClear">On
+                    Clear Alarm</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="m-form__group row">
+            <div class="col-lg-6">
+              <label i18n="Alarm Message|Alarm Message@@alarmMessage*" class="">Alarm Message<span
+                  class="text-danger">*</span></label>
+              <a id="popUpWindow" (click)="alarmMessage()">
+                <i class="fas fa-md fa-fw m-r-10 fa-question-circle" alt="view" matTooltip="Help"></i>
+              </a>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((analogAlarmForm.get('alarmMessage').touched ||
+                                    analogAlarmForm.get('alarmMessage').dirty) &&
+                                    analogAlarmForm.get('alarmMessage').errors)}">
+                  <input type="text" formControlName="alarmMessage" class="form-control m-input"
+                    i18n-placeholder="Alarm Message placeholder|Enter Alarm Message@@alarmMessage.placeholder"
+                    placeholder="Enter Alarm Message">
+                  <span class="help-block" *ngIf="((analogAlarmForm.get('alarmMessage').touched ||
+                                    analogAlarmForm.get('alarmMessage').dirty) &&
+                                    analogAlarmForm.get('alarmMessage').errors)">
+                    <span i18n="Message|Please enter Alarm Message@@alarmMessage.message"
+                      *ngIf="analogAlarmForm.get('alarmMessage').errors.required">
+                      Please enter Alarm Message
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <label i18n="Clear Alarm Message|Clear Alarm Message@@clearAlarmMessage" class="">Clear
+                Alarm Message</label>
+              <a id="popUpWindow" (click)="alarmClearMessage()">
+                <i class="fas fa-md fa-fw m-r-10 fa-question-circle" alt="view" i18n-matTooltip="@@ClicktoView"
+                  matTooltip="Help"></i>
+              </a>
+              <div class="form-group">
+                <input type="text" formControlName="clearAlarmMessage" class="form-control m-input"
+                  i18n-placeholder="Alarm Message placeholder|Enter Alarm Message@@alarmMessage.placeholder"
+                  placeholder="Enter Alarm Message">
+              </div>
+            </div>
+          </div>
+          <div class="m-form__group row">
+            <div class="col-md-3">
+              <label i18n="Valid From Date|Valid From Date@@validFromDate">Valid From Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <input [placement]="'bottom-left'" (click)="d2.toggle()" class="form-control" placeholder="YYYY-MM-DD" id="validFromDate"
+                    formControlName="validFromDate" placement="bottom-right" ngbDatepicker #d2="ngbDatepicker"
+                    [maxDate]="validTillDay" (dateSelect)="addMinDateValue()" (keyup)="validateFromDate()">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label i18n="Valid Till Date|Valid Till Date@@validTillDate*">Valid Till Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <input [placement]="'bottom-left'" (click)="d1.toggle()" class="form-control" placeholder="YYYY-MM-DD" id="validTillDate"
+                    formControlName="validTillDate" placement="bottom-right" ngbDatepicker #d1="ngbDatepicker"
+                    [maxDate]="todayDate" [minDate]="minDate" (dateSelect)="validateFromStartFromEndDate()">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label i18n="Start Time|Start Time@@Start Time*">Start Time</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="time" id="startTime" formControlName="startTime" value="00:00" name="startTime"
+                    (click)="validateStartAndEndTime($event.target.id)"
+                    (keyup)="validateStartAndEndTime($event.target.id)"
+                    (change)="validateStartAndEndTime($event.target.id)" class="form-control m-input" />
+                </div>
+                <span class="help-block" *ngIf="validateTime">
+                  <span style="text-align: right;"
+                    i18n="Message|Please enter valid Start Time@@startDate.message1">Start Time should be less than End
+                    Time</span>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label i18n="End Time|End Time@@End Time*">End Time</label>
+              <div [ngClass]="{'has-error': ((analogAlarmForm.get('endTime').touched ||
+                            analogAlarmForm.get('endTime').dirty) &&
+                            analogAlarmForm.get('endTime').errors)}">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="time" id="endTime" placeholder="HH:mm" formControlName="endTime"
+                      (click)="validateStartAndEndTime($event.target.id)"
+                      (keyup)="validateStartAndEndTime($event.target.id)"
+                      (change)="validateStartAndEndTime($event.target.id)" class="form-control m-input" />
+                  </div>
+                  <span class="help-block" *ngIf="((analogAlarmForm.get('endTime').touched ||
+                              analogAlarmForm.get('endTime').dirty) &&
+                              analogAlarmForm.get('endTime').errors)">
+                    <span i18n="Message|Please select endTime@@endTime.message"
+                      *ngIf="analogAlarmForm.get('endTime').errors.required && !validateEndTime">
+                      Please Select EndTime
+                    </span>
+                  </span>
+                  <span class="help-block" *ngIf="validateEndTime">
+                    <span style="text-align: right;" i18n="Message|Please enter valid End Time@@endDate.message1">
+                      End Time should be greater than Start Time
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-2"></div> -->
+          </div>
+          <div class="m-form__group row">
+            <div class="col-md-4">
+              <label i18n="Status|Status@@status">Status</label>
+              <div class="form-group">
+                <mat-radio-group formControlName="status">
+                  <mat-radio-button value="Active" i18n="Radio button|Active@@active" style="margin-right: 20px;"
+                    id="dataProtocolStatusA">
+                    Active
+                  </mat-radio-button>
+                  <mat-radio-button id="dataProtocolStatusI" value="In_Active" i18n="Radio button|InActive@@inActive">
+                    In-Active
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+          <div class="path"></div>
+          <legend i18n="Header|Alarm Notification Config Details@@analogAlarmNotificationConfig" class="m-b-15">Alarm
+            Notification Config Details</legend>
+          <div formArrayName="alarmNotificationConfigs"
+            *ngFor="let alarmNotificationConfig of analogAlarmForm.get('alarmNotificationConfigs')['controls']; let index = index">
+            <div [formGroupName]="index">
+              <div class="m-form__group row">
+                <div class="col-lg-6">
+                  <div class="form-group d-flex align-items-center">
+                    <mat-checkbox formControlName="isAssign" #checkbox
+                      (change)="sectionEnableDisable(checkbox.checked,index)"
+                      i18n-matTooltip="Enable/Disable matTooltip|Click to enable/Disable@@clickToEnable/Disable"
+                      matTooltip="Click to enable/Disable">
+                    </mat-checkbox>&nbsp;<label class="labelProtocol d-flex align-items-center mb-0 ml-1"
+                      i18n="@SMSNotification"><strong>{{notifcationMedias[index].name}}
+                        Notification</strong></label>
+                    <input type="hidden" formControlName="notificationMediaId"
+                      [attr.data-notificationMediaId-id]="notifcationMedias[index].id"
+                      [value]="notifcationMedias[index].id">
+                  </div>
+                </div>
+              </div>
+              <div class="m-form__group row">
+                <div class="col-lg-6">
+                  <label i18n="Notification Group|Notification Group@@notificationGroup*"
+                    class="">{{notifcationMedias[index].name}}
+                    Notification Group<span class="text-danger">*</span></label>
+                  <div class="form-group">
+                    <div [ngClass]="{'has-error': ((alarmNotificationConfig.get('notificationGroupId').touched ||
+                                    alarmNotificationConfig.get('notificationGroupId').dirty) &&
+                                    alarmNotificationConfig.get('notificationGroupId').errors)}">
+                      <select formControlName="notificationGroupId" class="form-control m-input">
+                        <option i18n="Option|Select@@select" [ngValue]="null">--Select--
+                        </option>
+                        <option *ngFor="let groupMedia of notifcationAndMediaGrps[index]"
+                          [value]="groupMedia.notificationGroupId">
+                          {{groupMedia.notificationGroup.name}}
+                        </option>
+                      </select>
+                      <span class="help-block" *ngIf="((alarmNotificationConfig.get('notificationGroupId').touched ||
+                                        alarmNotificationConfig.get('notificationGroupId').dirty) &&
+                                        alarmNotificationConfig.get('notificationGroupId').errors)">
+                        <span i18n="Message|Please select Notification Group@@alarmNotificationConfig.message"
+                          *ngIf="alarmNotificationConfig.get('notificationGroupId').errors.required">
+                          Please select Notification Group
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <app-panel-user class="panel-header"
+                  i18n-name="Panel header|Alarm State Notification@@alarmStateNotification"
+                  name="Alarm State Notification ({{notifcationMedias[index].name}})" #panelHeader>
+
+                </app-panel-user>
+                <div class="position-relative">
+                  <div class="table-responsive ps position-relative" appScrollbarDirective>
+                    <table mat-table [dataSource]="dataSource" class="table table-striped table-bordered"
+                      formArrayName="alarmStateNotificationConfigs">
+                      <!-- Row definitions -->
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                      <tr mat-row *matRowDef="let element; let i = index; columns: displayedColumns;">
+                      </tr>
+                      <!-- Column definitions -->
+
+                      <ng-container matColumnDef="alarmState">
+                        <th i18n="Table|Alarm State|alarmState" mat-header-cell *matHeaderCellDef> Alarm State</th>
+                        <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                          <div class="d-flex align-items-center">
+                            <mat-checkbox class="mr-2" #checkbox
+                              (change)="enableDisableState(checkbox.checked, index, i)" formControlName="isAssign"
+                              i18n-matTooltip="Enable/Disable|Click to enable/Disable@@ClickToEnable/Disable"
+                              matTooltip="Click to enable/Disable">
+                            </mat-checkbox>
+                            <label class="mb-0">
+                              {{alarmStates[i].name}}
+                            </label>
+                            <input type="hidden" formControlName="alarmState" value="{{alarmStates[i].id}}">
+                          </div>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="smsNotificationGroup">
+                        <th i18n="Table|Notification Group@@notificationGroup" mat-header-cell *matHeaderCellDef>
+                          {{notifcationMedias[index].name}}
+                          Notification Group </th>
+                        <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                          <select formControlName="notificationGroupId" class="form-control m-input">
+                            <option i18n="Option|Select@@select" [value]="null">--Select--
+                            </option>
+                            <option *ngFor="let groupMedia of notifcationAndMediaGrps[index]"
+                              [value]="groupMedia.notificationGroupId">
+                              {{groupMedia.notificationGroup.name}}
+                            </option>
+                          </select>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="repeatNotification">
+                        <th i18n="Table|Repeat Notification Interval(in Sec)@@repeatNotification" mat-header-cell
+                          *matHeaderCellDef> Repeat Notification Interval (in
+                          Sec)
+                        </th>
+                        <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                          <input *ngIf="i==3" type="text" formControlName="notificationRepeatIntervalSec"
+                            class="form-control m-input" placeholder="" readonly>
+                          <div
+                            [ngClass]="{'has-error': ((alarmNotificationConfig.get('alarmStateNotificationConfigs')['controls'][i].get('notificationRepeatIntervalSec').touched ||
+                                                    alarmNotificationConfig.get('alarmStateNotificationConfigs')['controls'][i].get('notificationRepeatIntervalSec').dirty) &&
+                                                    alarmNotificationConfig.get('alarmStateNotificationConfigs')['controls'][i].get('notificationRepeatIntervalSec').errors)}">
+                            <input *ngIf="i!=3" type="text" formControlName="notificationRepeatIntervalSec"
+                              class="form-control m-input"
+                              i18n-placeholder="Repeat Notification Interval placeholder|Enter Repeat Notification Interval(in Sec)@@notificationRepeatIntervalSec.placeholder"
+                              placeholder="Enter Repeat Notification Interval (in Sec)">
+                            <span class="help-block"
+                              *ngIf="((alarmNotificationConfig.get('alarmStateNotificationConfigs')['controls'][i].get('notificationRepeatIntervalSec').touched ||
+                                                alarmNotificationConfig.get('alarmStateNotificationConfigs')['controls'][i].get('notificationRepeatIntervalSec').dirty) &&
+                                                alarmNotificationConfig.get('alarmStateNotificationConfigs')['controls'][i].get('notificationRepeatIntervalSec').errors)">
+
+                              <span i18n="Message|Please enter only Numbers@@repeatNotification.message2"
+                                *ngIf="alarmNotificationConfig.get('alarmStateNotificationConfigs')['controls'][i].get('notificationRepeatIntervalSec').errors.pattern"
+                                class="display_inherit">
+                                Please enter only Numbers
+                              </span>
+                            </span>
+                          </div>
+                        </td>
+                      </ng-container>
+
+                    </table>
+                  </div>
+                </div>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="path path finalLine"></div>
+        <div class="row" style="text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <a (click)="cancelAnalogAlarmForm($event)">
+              <button type="button" id="cancelAnalog" class="btn btn-default text-center cancelActionButton"
+                i18n="Cancel button|Cancel@@cancel">
+                Cancel
+              </button>
+            </a>
+            &nbsp;
+            <button type="button" class="btn btn-secondary text-center resetActionButton"
+              [disabled]="!analogAlarmForm.dirty && analogAlarmForm.pristine" (click)="resetAlarmConfigForm()"
+              i18n="Reset button|Reset@@reset">
+              Reset
+            </button>
+            &nbsp;
+            <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+              matTooltip="Fill the mandatory fields" [matTooltipDisabled]="analogAlarmForm.valid">
+              <button i18n="Review&Save button|Review&Save@@review&Save"
+                class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                [disabled]="!analogAlarmForm.valid" *ngIf="!disableSaveButton">
+                Review & Save</button>
+            </span>
+          </div>
+        </div>
+      </form>
+
+
+      <div class="formReadMode" *ngIf="alarmFormPreview">
+        <div class="form-group-custom1">
+          <legend
+            i18n="Header|Limit Alarm Configuration for Analog Asset Tag@@analogAlarmConfigurationForAnalogAssetTag"
+            class="m-b-15">Limit Alarm Configuration for Analog Asset Tag</legend>
+          <div class="form-row">
+            <a (click)="backButton()" class="edit_section">
+              <img src="/assets/img/action/edit.png" alt="edit communication i/o tag detail"
+                i18n-matTooltip="Image Tooltip|Click to edit Alarm Configuration Detail@@clickToEditAlarmConfig"
+                matTooltip="Click to edit Alarm Configuration Detail">
+            </a>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Asset Tag Name|Asset Tag Name@@assetTagName" class="">Asset Tag Name</label>
+              <p>
+                {{analogAssetTag.name}}
+              </p>
+            </div>
+          </div>
+          <div class="path"></div>
+          <legend i18n="Header|Alarm Config Details@@analogAlarmConfig" class="m-b-15">Alarm Config Details
+          </legend>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="Alarm Name|Alarm Name@@alarmName" class="">Alarm Name</label>
+              <p>
+                {{formData.name}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="Alarm Type|Alarm Type@@alarmType" class="">Alarm Type</label>
+              <span *ngFor="let alarmType of alarmTypes">
+                <p *ngIf="alarmType.id == parseInt(formData.alarmTypeId)">{{alarmType.name}}</p>
+              </span>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="Limit|Limit@@limit" class="">Limit</label>
+              <p>
+                {{formData.alarmConditionValue | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="Severity|Severity@@alarmSevierity" class="">Severity</label>
+              <span *ngFor="let severity of alarmSeveritys">
+                <p *ngIf="severity.id == parseInt(formData.alarmSevierity)">{{severity.name}}</p>
+              </span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="Value Deadband|Value Deadband@@valueDeadBand" class="">Value Deadband</label>
+              <p>
+                {{formData.valueDeadBand | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <div class="row">
+                <div class="col-md-6">
+                  <label i18n="Radio button|On Raise Alarm@valueDeadBandOnRaise" class="">On Raise
+                    Alarm</label>
+                  <p>
+                    {{formData.valueDeadBandOnRaise?"Yes":"No"}}
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <label i18n="Radio button|On Clear Alarm@valueDeadBandOnClear" class="">On Clear
+                    Alarm</label>
+                  <p>
+                    {{formData.valueDeadBandOnClear?"Yes":"No"}}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="Time Deadband|Time Deadband(in Sec)@@timeDeadband" class="">Time
+                Deadband</label>
+              <p>
+                {{formData.timeDeadBandInSec | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <div class="row">
+                <div class="col-md-6">
+                  <label i18n="Radio button|On Raise Alarm@timeDeadBandOnRaise" class="">On Raise
+                    Alarm</label>
+                  <p>
+                    {{formData.timeDeadBandOnRaise?"Yes":"No"}}
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <label i18n="Radio button|On Clear Alarm@timeDeadBandOnClear" class="">On Clear
+                    Alarm</label>
+                  <p>
+                    {{formData.timeDeadBandOnClear?"Yes":"No"}}
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="Alarm Message|Alarm Message@@alarmMessage" class="">Alarm Message</label>
+              <p>
+                {{formData.alarmMessage}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="Clear Alarm Message|Clear Alarm Message@@clearAlarmMessage" class="">Clear
+                Alarm Message</label>
+              <p>
+                {{formData.clearAlarmMessage | hyphen}}
+              </p>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="ValidFromDate|ValidFromDate@@ValidFromDate" class="">Valid From Date</label>
+              <p>
+                {{formData.validFromDate | date:'dd/MM/yyyy'}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="ValidTillDate|ValidTillDate@@ValidTillDate" class="">Valid Till Date</label>
+              <p>
+                {{formData.validTillDate | date:'dd/MM/yyyy'}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="startTime|startTime@@startTime" class="">Start Time</label>
+              <p>
+                {{formData.startTime | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="endTime|endTime@@endTime" class="">End Time</label>
+              <p>
+                {{formData.endTime | hyphen}}
+              </p>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-3">
+              <label i18n="Status|Status@@status" class="">Status</label>
+              <p>
+                {{formData.status}}
+              </p>
+            </div>
+          </div>
+          <span *ngIf="null != formData.alarmNotificationConfigs && formData.alarmNotificationConfigs.length !=0">
+            <div class="path"></div>
+            <legend i18n="Header|Alarm Notification Config Details@@analogAlarmNotificationConfig" class="m-b-15">Alarm
+              Notification Config Details</legend>
+            <div *ngFor="let alarmNotifig of formData.alarmNotificationConfigs">
+              <div class="form-row">
+                <div class="form-group col-sm-6 col-md-6">
+                  <label i18n="Notification|Notification@@notification" class="">Notification</label>
+                  <p>
+                    {{alarmNotifig.notificationMediaName}}
+                  </p>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
+                  <label i18n="Notification Group|Notification Group@@notificationGroup" class="">Notification
+                    Group</label>
+
+                  <p>
+                    {{alarmNotifig.notificationGroupName | hyphen}}
+                  </p>
+                </div>
+
+
+              </div>
+              <span *ngIf="alarmNotifig.alarmStateNotificationConfigs.length !=0">
+                <div class="path"></div>
+                <legend i18n="Header|Alarm State Notification@@alarmStateNotification" class="m-b-15">
+                  {{alarmNotifig.notificationMediaName}}
+                  Alarm State Notification</legend>
+              </span>
+              <div class="form-row" *ngFor="let state of alarmNotifig.alarmStateNotificationConfigs">
+
+                <div class="form-group col-sm-6 col-md-4">
+                  <label i18n="Alarm State|Alarm State@@alarmState" class="">Alarm State</label>
+                  <p>
+                    {{state.alarmStateName | hyphen}}
+                  </p>
+                </div>
+                <div class="form-group col-sm-6 col-md-4">
+                  <label i18n="Notification Group|Notification Group@@notificationGroup" class="">Notification
+                    Group</label>
+                  <!-- <span *ngFor="let groupMedias of notifcationAndMediaGrps">
+                                        <span *ngFor="let groupMedia of groupMedias">
+                                        <p *ngIf="state.notificationGroupId == groupMedia.notificationGroupId">
+                                            {{groupMedia.notificationGroup.name }}
+                                        </p>
+                                        </span>
+
+                                        </span> -->
+                  <p>
+                    {{state.notificationGroupName | hyphen}}
+                  </p>
+                </div>
+                <div class="form-group col-sm-6 col-md-4">
+                  <label i18n="Repeat Notification Interval|Repeat Notification Interval@@repeatNotificationInterval)"
+                    class="">Repeat Notification Interval(in
+                    Sec)</label>
+                  <p>
+                    {{state.notificationRepeatIntervalSec | hyphen}}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </span>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;float:right;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton()"
+              i18n="Back button|Back@@back">
+              Back
+            </button>
+            &nbsp;
+            <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit"
+              (click)="onClickSaveAlaramConfig()">
+              Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Discrete form view end here  -->
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+  align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="alertRedirection()" (modelNotificationSuccess)="redirectTo()">
+</app-modal-notification>

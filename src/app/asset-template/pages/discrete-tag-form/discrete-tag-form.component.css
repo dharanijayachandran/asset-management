@@ -1,0 +1,21 @@
+
+.table tr:first-child th{
+  border: 1px solid #e2e7eb!important;
+}
+.table tr th:first-child{
+  width: 50px!important;
+}
+.table{
+    display:table!important;
+    min-width: 100%;
+    table-layout:fixed!important;
+  }
+  .table th, .table td{
+    display:table-cell!important;
+    width: 200px!important;
+  }
+  
+/*   div.table-responsive{
+      overflow-x: auto!important;
+  } */
+  

@@ -1,0 +1,107 @@
+<div class="form-group-custom1">
+  <!-- <legend i18n="@@ManageDiscreteTagDetails" class="m-b-15">Manage Discrete Tag Details</legend> -->
+  <div class="form-row">
+    <a (click)="backButton('assetTag')" class="edit_section">
+      <img src="/assets/img/action/edit.png" alt="Edit Analog Tag Details"
+        i18n-matTooltip="@@ClicktoEditAnalogTagDetails" matTooltip="Click to Edit Manage Discrete Tag Details">
+    </a>
+    <div class="form-group col-sm-6 col-md-4">
+      <label i18n="Name|Name@@name" class="">Name</label>
+      <p>
+        {{assetTag.name}}
+      </p>
+    </div>
+  </div>
+  <!-- Input configuration starts here--------------------- -->
+  <div *ngIf="assetTag.isInputEnabled==true" class="pb-3">
+    <div class="path"></div>
+    <legend i18n="Header|Input Configuration@@inputConfiguration" class="m-b-15">Input Configuration</legend>
+    <div class="form-row">
+      <a (click)="backButton('inputConfiguration')" class="edit_section">
+        <img src="/assets/img/action/edit.png" alt="Edit Input Configuration"
+          i18n-matTooltip="@@ClicktoEditInputConfiguration" matTooltip="Click to Edit Input Configuration">
+      </a>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Input Enabled|Input Enabled@@inputEnabled" class="">Input Enabled</label>
+        <p>
+          {{assetTag.isInputEnabled ? "Yes": "No"}}
+        </p>
+      </div>
+     <!--  <div class="form-group col-sm-6 col-md-4">
+        <label i18n="{{this.gatewayAndTemplateLableName}}|{{this.gatewayAndTemplateLableName}}@@{{this.gatewayAndTemplateLableName}}" class="">{{this.gatewayAndTemplateLableName}}</label>
+        <p>
+          {{assetTemplateDetails.gatewayTemplateName}}
+        </p>
+      </div> -->
+    </div>
+    <legend i18n="Header|List of Asset Tag States@@listOfAssetTagStates" class="m-b-15">List of Asset Tag States</legend>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>
+            <div class="d-flex justify-content-between">
+              <span i18n="IO Tag|Input Output Tag@@iOTag">IO Tag</span>
+              <span i18n="State|State@@state">State</span>
+            </div>
+          </th>
+          <th *ngFor="let column of displayColumns; let i = index">{{column}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let assetGatewayInputTagDiscreteObj of assetTag.assetGatewayInputTagDiscrete">
+          <td>{{assetGatewayInputTagDiscreteObj.gatewayIoTagName}}</td>
+          <td *ngFor="let ioTagvalueObj of assetGatewayInputTagDiscreteObj.ioTagValue">
+            {{ioTagvalueObj.gatewayIoTagValue}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Input configuration ends here--------------------- -->
+
+  <!-- Output configuration starts here--------------------- -->
+  <div *ngIf="assetTag.isOutputEnabled==true">
+    <div class="path"></div>
+    <legend i18n="Header|Output Configuration@@outputConfiguration" class="m-b-15">Output Configuration</legend>
+    <div class="form-row">
+      <a (click)="backButton('outputConfiguration')" class="edit_section">
+        <img src="/assets/img/action/edit.png" alt="Edit Input Configuration"
+          i18n-matTooltip="@@ClicktoEditInputConfiguration" matTooltip="Click to Edit Input Configuration">
+      </a>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Output Enabled|Output Enabled@@outputEnabled" class="">Output Enabled</label>
+        <p>
+          {{assetTag.isOutputEnabled ? "Yes": "No"}}
+        </p>
+      </div>
+      <!-- <div class="form-group col-sm-6 col-md-4">
+        <label i18n="{{this.gatewayAndTemplateLableName}}|{{this.gatewayAndTemplateLableName}}@@{{this.gatewayAndTemplateLableName}}" class="">{{this.gatewayAndTemplateLableName}}</label>
+        <p>
+          {{assetTemplateDetails.gatewayTemplateName}}
+        </p>
+      </div> -->
+    </div>
+    <legend i18n="Header|List of Asset Tag States@@listOfAssetTagStates" class="m-b-15">List of Asset Tag States</legend>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>
+            <div class="d-flex justify-content-between">
+              <span i18n="IO Tag|Input Output Tag@@iOTag">IO Tag</span>
+              <span i18n="State|State@@state">State</span>
+            </div>
+          </th>
+          <th *ngFor="let column of displayColumns; let i = index">{{column}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let assetGatewayOutputTagDiscreteObj of assetTag.assetGatewayOutputTagDiscrete">
+          <td>{{assetGatewayOutputTagDiscreteObj.gatewayIoTagName}}</td>
+          <td *ngFor="let ioTagvalueObj of assetGatewayOutputTagDiscreteObj.ioTagValue">
+            {{ioTagvalueObj.gatewayIoTagValue}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="path"></div>
+  </div>
+  <!-- output configuration ends here--------------------- -->
+</div>

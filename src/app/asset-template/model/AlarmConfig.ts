@@ -1,0 +1,47 @@
+import { AlarmNotificationConfig } from './alarmNotificationConfig';
+import { AlarmStateNotificationConfig } from './alarmStateNotificationConfig';
+
+export class AlarmConfig {
+    id: number;
+    alarmTypeId: number;
+    alarmMessage: string;
+    alarmTypeName: string;
+    limitAlarms: AlarmConfig[];
+    alarmStates: AlarmConfig[];
+    isAssign: boolean;
+    status: string;
+    createdBy: number;
+    updatedBy: number;
+    businessEntityId: number;
+    name: string;
+    alarmEntityTypeId: number;
+    alarmEntityId: number;
+    alarmConditionValue: string;
+    alarmSevierity: number;
+    valueDeadBand: any;
+    valueDeadBandOnRaise: boolean;
+    valueDeadBandOnClear: boolean;
+    timeDeadBandInSec: any;
+    timeDeadBandOnRaise: boolean;
+    timeDeadBandOnClear: boolean;
+    //  alarmType: AlarmType;
+    alarmNotificationConfigs: AlarmNotificationConfig[];
+    alarmStateNotificationConfigs: AlarmStateNotificationConfig[];
+    smsNotificationGroup: AlarmStateNotificationConfig[];
+    emailNotificationGroup: AlarmStateNotificationConfig[];
+    // alarmEntityType: AlarmEntityType;
+    smsNotification: boolean;
+    emailNotification: boolean;
+    smsNotificationGroupId: number;
+    emailNotificationGroupId: number;
+    clearAlarmMessage: string;
+    severityName:string;
+    validFromDate:string;
+    validTillDate:string;
+    validFromTime:string;
+    validTillTime:string;
+    startTime:string;
+    endTime:string;
+    startDate:string;
+    endDate:string;
+}

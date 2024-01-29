@@ -1,0 +1,132 @@
+<div class="form-row">
+  <a (click)="backButton()" class="edit_section">
+    <img src="/assets/img/action/edit.png" alt="Edit Asset Details"
+      i18n-matTooltip="Iamge matTooltip|Click to Edit Asset Details@@clickToEditAssetDetails"
+      matTooltip="Click to Edit Asset Details">
+  </a>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Name|Name@@name" class="">Name</label>
+    <p>
+      {{asset.name | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Description|Description@@description" class="">Description</label>
+    <p>
+      {{asset.description | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Asset Category|Asset Category@@assetCategory" class="">Asset Category</label>
+    <p>
+      {{asset.assetCategoryName | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Asset Type|Asset Type@@assetTypes" class="">Asset Type</label>
+    <p>
+      {{asset.assetTypeName | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Asset Template|Asset Template@@assetTemplateNoInp" class="">Asset Template</label>
+    <p>
+      {{asset.assetTemplateName | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Gateway|Gateway@@gateway" class="">Gateway</label>
+    <p>
+      {{asset.gatewayTemplateName | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="GPS Tracking Enabled|GPS Tracking Enabled@@isGPSTrackingEnabled" class="">GPS Tracking Enabled</label>
+    <p ng>
+      {{asset.isGPSTrackingEnabled ? "Yes": "No"}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Geospatial Object Type|Geospatial Object Type@@geospatialObjectType" class="">Geospatial Object
+      Type</label>
+    <p>
+      {{asset.geospatialObjectTypeName | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Geospatial Coordinates|Geospatial Coordinates@@geospatialCoordinates" class="">Geospatial
+      Coordinates</label>
+    <p>
+      {{asset.geospatialCoordinates | hyphen}}
+    </p>
+  </div>
+
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Rt Data Sharing Enabled|Rt Data Sharing Enabled@rtDataSharingEnabled">Real Time Data
+      Sharing Enabled
+    </label>
+    <p ng>
+      {{asset.isRtDataSharingEnabled ? "Yes": "No"}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Rt Data Sharing Topic|Rt Data Sharing Topic@@rtDataSharingTopic*" class="">Real Time Data Sharing
+      Topic</label>
+    <p>
+      {{asset.rtDataSharingTopic | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Asset Order|Asset Order@@assetOrder*" class="">Asset Order</label>
+    <p>
+      {{asset.assetOrder | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Status|Status@@status" class="">Status</label>
+    <p>
+      {{asset.status | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="timeZoneName|timeZoneName@@timeZoneName" class="">Time Zone</label>
+    <p>
+      {{timeZoneName | hyphen}}
+    </p>
+  </div>
+</div>
+<div>
+  <span *ngIf="asset.assetParams && asset.assetParams.length!=0">
+    <legend i18n="Header|List of Asset Paramaters@@listOfAssetParamaters" class="m-b-15">List of Asset Paramaters
+    </legend>
+    <div class="form-row" *ngFor="let param of asset.assetParams">
+      <ng-container *ngIf="param.status != 'Deleted'">
+        <div class="form-group col-sm-6 col-md-3">
+          <label i18n="Parameter Name|Parameter Name@@parameterName" class="">Parameter Name</label>
+          <p>
+            {{param.name | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-3">
+          <label i18n="Description|Description@@description" class="">Description</label>
+          <p>
+            {{param.description | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-3">
+          <label i18n="Value|Value@@value" class="">Value</label>
+          <p>
+            {{param.value | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-3">
+          <label i18n="Eng Unit|Eng Unit@@engUnit" class="">Eng Unit</label>
+          <p>
+            {{param.engUnitName | hyphen}}
+          </p>
+        </div>
+      </ng-container>
+    </div>
+  </span>
+
+</div>

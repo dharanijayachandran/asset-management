@@ -1,0 +1,32 @@
+export class AnalogTag {
+  assetTagId: number;
+  gatewayIOTagId: number;
+  isScalingEnabled: boolean;
+  conversionMode: string;
+  fvMin: any;
+  fvMax: any;
+  pvMin: any;
+  pvMax: any;
+  linearConversionSlope: any;
+  linearConversionIntercept: any;
+  isClampToEuRangeValue: boolean;
+  euRangeValueMin: any;
+  euRangeValueMax: any;
+  AssetTag: object;
+  id: number;
+  alarmEntityId:number;
+  createdOn: string;
+  createdBy: number;
+  status: string;
+  gatewayIOTagName: string;
+  dataTypeId: number;
+  engUnitId: number;
+  dataTypeName: string;
+  engUnitName: string;
+  assetTemplateName: string;
+  name: string;
+  orgAssetStandardTagId:number;
+  orgAssetStandardTagName:string;
+  displayOrder:number;
+  alarmEntityName:String;
+}

@@ -1,0 +1,111 @@
+<div class="form-row">
+  <a (click)="backButton()" class="edit_section">
+    <img src="/assets/img/action/edit.png" alt="Edit Asset Template Details"
+      i18n-matTooltip="@@ClicktoEditAssetDiscreteStateDetails" matTooltip="Click to Edit Asset Discrete State Details">
+  </a>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Name|Name@@name" class="">Name</label>
+    <p>
+      {{discreteTag.name}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Data Type|Data Type@@dataType" class="">Data Type</label>
+    <p *ngFor='let dataType of dataTypeList'>
+      <span *ngIf='dataType.id===parseInt(discreteTag.dataTypeId)'>
+        {{dataType.name}}
+      </span>
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Description|Description@@description" class="">Description</label>
+    <p>
+      {{discreteTag.description | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Status|Status@@status" class="">Status</label>
+    <p>
+      {{discreteTag.status | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Organization Standard Tag|Organization Standard Tag@@organizationStandardTag" class="">Organization Standard Tag</label>
+    <p *ngFor='let assetStandardTag of assetStandardTagList'>
+      <span *ngIf='assetStandardTag.id===parseInt(discreteTag.orgAssetStandardTagId)'>
+        {{assetStandardTag.name}}
+      </span>
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label  class="">Order</label>
+    <p *ngIf="discreteTag.displayOrder">
+    {{ discreteTag.displayOrder }} 
+    </p>
+    <p *ngIf="null == discreteTag.displayOrder">
+      - 
+      </p>
+  </div>
+  <div class="path"></div>
+  <legend i18n="Header|List of Asset Tag States@@listOfAssetTagStates" class="m-b-15">List of Asset Tag States</legend>
+  <div class="row" style="width: 100%;"
+    *ngFor="let discrtesAssetState of discreteTag.assetTagDiscreteState">
+    <ng-container *ngIf="discrtesAssetState.status!='Deleted'">
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Asset Tag State|Asset Tag State@@assetTagState" class="">Asset Tag State</label>
+        <p>
+          {{discrtesAssetState.name | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Numeric Value|Numeric Value@@numericValue" class="">Numeric Value</label>
+        <p>
+          {{discrtesAssetState.numericValue === 0 ? 0:discrtesAssetState.numericValue | hyphen}}        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Commandable|Commandable@@isCommandable" class="">Commandable</label>
+        <p>
+          {{discrtesAssetState.isCommandable ? "Yes": "No"}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Standard State|Standard State@@standardState" class="">Standard State</label>
+        <!--  <p *ngIf="discrtesAssetState.discreteStateId===null else standardState">
+       
+      </p> 
+      <ng-template #standardState>
+        <p *ngFor='let discreateState of discreateStandardState'>
+          <span *ngIf='discreateState.id===parseInt(discrtesAssetState.discreteStateId)'>
+          {{discreateState.name}}
+      </span>
+       </p>
+      </ng-template> -->
+        <ng-container *ngIf="discrtesAssetState.discreteStateId===null;else standardState">
+          <p>
+            {{discrtesAssetState.discreteStateId | hyphen}}
+          </p>
+        </ng-container>
+        <ng-template #standardState>
+          <ng-container *ngIf="discrtesAssetState.discreteStateId!=null;else default">
+            <p *ngFor='let discreateState of discreateStandardState'>
+              <span *ngIf='discreateState.id===parseInt(discrtesAssetState.discreteStateId)'>
+                {{discreateState.name}}
+              </span>
+            </p>
+          </ng-container>
+        </ng-template>
+        <ng-template #default>
+          <p>
+            {{discrtesAssetState.discreteStateId?discrtesAssetState.discreteStateId:'-'}}
+          </p>
+        </ng-template>
+      </div>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Status|Status@@status" class="">Status</label>
+        <p>
+          {{discreteTag.status | hyphen}}
+        </p>
+      </div>
+    </ng-container>
+  </div>
+</div>

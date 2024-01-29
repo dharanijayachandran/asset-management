@@ -1,0 +1,15 @@
+.margin_top_30px {
+  margin-top: 23px;
+}
+
+@media screen and(max-width: 767px) {
+  .fetchbtn {
+    margin-left: 10px;
+  }
+}
+
+@media screen and(min-width: 280px) {
+  .fetchparentname {
+    margin-left: 0px;
+  }
+}

@@ -1,0 +1,65 @@
+<!-- begin page-header --> 
+<h1 i18n="Page header|Asset Template Configuration@@assetTemplateConfiguration" class="page-header">
+  Asset Template Configuration
+</h1>
+<div class="header_Underline"></div>
+<!-- end page-header -->
+
+<!-- begin row -->
+<div class="row">
+  <!-- begin col-6 -->
+  <div class="col-lg-12">
+    <!-- begin nav-tabs -->
+    <ngb-tabset type="pills" (tabChange)="beforeChange($event)">
+      <ngb-tab id="manageAssetListView">
+        <ng-template ngbTabTitle>
+          <span i18n="Tab|Template@@template" class="d-sm-none" (click)="onChange()">Template</span>
+          <span i18n="Tab|Template@@template" class="d-sm-block d-none" (click)="onChange()">Template</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <!-- Asset List view -->
+          <div class="rowBox p-10 custom-rounded-bottom rowBoxFirstLevelHeight" *ngIf="displayPage == 'templateList'">
+            <app-asset-template-list (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage()">
+            </app-asset-template-list>
+          </div>
+
+          <!-- Asset form view -->
+          <app-asset-template-form-view *ngIf="displayPage == 'templateFormView'"
+            (navigateTemplate)="gettingDisplayPage($event)"></app-asset-template-form-view>
+
+          <!-- Asset Preview -->
+          <app-asset-template-preview *ngIf="displayPage == 'templatePreview'"
+            (navigateTemplate)="gettingDisplayPage($event)"></app-asset-template-preview>
+
+          <!-- Asset List view -->
+          <app-asset-template-view *ngIf="displayPage == 'templateView'"
+            (navigateTemplate)="gettingDisplayPage($event)"></app-asset-template-view>
+        </ng-template>
+      </ngb-tab>
+
+      <ngb-tab id="manageTags">
+        <ng-template ngbTabTitle>
+          <span i18n="Tab|Tags@@tags" class="d-sm-none">Tags</span>
+          <span i18n="Tab|Tags@@tags" class="d-sm-block d-none">Tags</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div id="tags">
+            <!-- Generate Tags view -->
+            <div class="rowBox p-10 custom-rounded-bottom rowBoxFirstLevelHeight"
+              *ngIf="displayPage == 'generateAssetTags'">
+              <app-generate-asset-tag (navigateTemplate)="gettingDisplayPage($event)"></app-generate-asset-tag>
+            </div>
+
+            <app-manage-asset-tag *ngIf="displayPage == 'manageAssetTags'"
+              (navigateTemplate)="gettingDisplayPage($event)"></app-manage-asset-tag>
+
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+    <!-- end nav-tabs -->
+  </div>
+  <!-- end col-6 -->
+
+</div>
+<!-- end row -->

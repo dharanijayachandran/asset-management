@@ -1,0 +1,222 @@
+<div [formGroup]="inputOutput" id="addressDetail">
+  <div class="form-group-custom1">
+    <div class="formBodyCustom1">
+      <!--Sealing Enabled  -->
+      <div class="m-form__group row form-group">
+        <div class="col-lg-2 col-md-5">
+          <label i18n="Scaling Enabled|Scaling Enabled@@scalingEnabled" class="" style="display: block;">Scaling Enabled</label>
+        </div>
+        <div class="col-lg-10 col-md-7">
+          <mat-checkbox [checked]="isScalingEnabled" (change)="isScalingEnabled($event)"
+          formControlName="isScalingEnabled"></mat-checkbox>
+        </div>
+      </div>
+      <!-- Scaling Enabled check this content will show -->
+      <ng-container *ngIf="sealedExpandCollapse">
+        <div class="m-form__group row">
+          <div class="col-lg-6" style="padding-left: 10px; padding-right: 15px;">
+            <label i18n="Conversion Mode|Conversion Mode@@conversionMode" class="">Conversion Mode</label>
+            <div class="form-group">
+              <mat-radio-group formControlName="conversionMode">
+                <mat-radio-button value="Linear" i18n="Linear|Linear@@linear" style="margin-right: 20px;">Linear
+                </mat-radio-button>
+                <mat-radio-button value="Square_Root" disabled matTooltip="Under Progress" i18n="Square Root|Square Root@@squareRoot">Square Root
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+          <div class="col-lg-6">
+
+          </div>
+        </div>
+        <div class="m-form__group row">
+          <div class="col-lg-6">
+            <label i18n="Intercept|Intercept@@intercept" class="">Intercept</label>
+            <div class="form-group">
+              <div [ngClass]="{'has-error': (( inputOutput.get('linearConversionIntercept').dirty) &&
+              inputOutput.get('linearConversionIntercept').errors)}">
+                <input type="text" class="form-control m-input" formControlName="linearConversionIntercept"
+                  i18n-placeholder="Intercept placeholder|Enter Intercept@@intercept.placeholder" placeholder="Enter Intercept">
+              </div>
+              <span class="help-block" *ngIf="((inputOutput.get('linearConversionIntercept').dirty) &&
+              inputOutput.get('linearConversionIntercept').errors)">
+                <span i18n="Message|Please enter only Numbers@@intercept.message" *ngIf="inputOutput.get('linearConversionIntercept').errors.pattern"
+                  class="display_inherit">
+                  Please enter only Numbers
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-6">
+
+            <label i18n="Slope/Gradiant|Slope/Gradiant@@slope/Gradiant" class="">Slope/Gradiant</label>
+            <div class="form-group">
+              <div [ngClass]="{'has-error': ((inputOutput.get('linearConversionSlope').touched ||
+              inputOutput.get('linearConversionSlope').dirty) &&
+              inputOutput.get('linearConversionSlope').errors)}">
+                <input type="text" class="form-control m-input" formControlName="linearConversionSlope"
+                  i18n-placeholder="Slope/Gradiant placeholder|Enter Slope/Gradiant@@slope/Gradiant.placeholder" placeholder="Enter Slope/Gradiant">
+              </div>
+              <span class="help-block" *ngIf="((inputOutput.get('linearConversionSlope').dirty) &&
+              inputOutput.get('linearConversionSlope').errors)">
+                <span i18n="Message|Please enter only Numbers@@slope/Gradiant.message" *ngIf="inputOutput.get('linearConversionSlope').errors.pattern"
+                  class="display_inherit">
+                  Please enter valid Numbers
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="m-form__group row">
+          <div class="col-lg-6">
+            <label i18n="Field Value Min|Field Value Minimun@@fieldValueMin" class="">Field Value (FV) Min</label>
+            <div class="form-group">
+              <div [ngClass]="{'has-error': (( inputOutput.get('fvMin').dirty) &&
+              inputOutput.get('fvMin').errors)}">
+                <input (mouseleave)="fvMinValidation()" type="text" class="form-control m-input"
+                  i18n-placeholder="Field Value Min placeholder|Enter Field Value (FV) Min@@fieldValueMin.placeholder" formControlName="fvMin"
+                  placeholder="Enter Field Value (FV) Min">
+              </div>
+              <span class="help-block" *ngIf="((inputOutput.get('fvMin').dirty) &&
+              inputOutput.get('fvMin').errors)">
+                <span i18n="Message|Please enter only Numbers@@fieldValueMin.message" *ngIf="inputOutput.get('fvMin').errors.pattern"
+                  class="display_inherit">
+                  Please enter only Numbers
+                </span>
+              </span>
+              <span i18n="Message|Please enter min value lesser than max value@@fieldValueMin.message1" *ngIf="minError" class="text-danger">
+                Please enter min value lesser than max value
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label i18n="Field Value Max|Field Value Maximum@@fieldValueMax" class="">Field Value (FV) Max</label>
+            <div class="form-group">
+              <div [ngClass]="{'has-error': (( inputOutput.get('fvMax').dirty) &&
+              inputOutput.get('fvMax').errors)}">
+                <input (mouseleave)="fvMaxValidation()" type="text" class="form-control m-input"
+                  i18n-placeholder="Field Value Max placeholder|Enter Field Value (FV) Maximum@@fieldValueMax.placeholder" formControlName="fvMax"
+                  placeholder="Enter Field Value (FV) Max">
+              </div>
+              <span class="help-block" *ngIf="((inputOutput.get('fvMax').dirty) &&
+              inputOutput.get('fvMax').errors)">
+                <span i18n="MessagePlease enter only Numbers@@fieldValueMax.message" *ngIf="inputOutput.get('fvMax').errors.pattern"
+                  class="display_inherit">
+                  Please enter only Numbers
+                </span>
+              </span>
+              <span i18n="Message|Please enter max value greater than min value@@fieldValueMax.message1" *ngIf="maxError" class="text-danger">
+                Please enter max value greater than min value
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="m-form__group row">
+          <div class="col-lg-6">
+            <label i18n="Processed Value Min|Processed Value Minimun@@processedValueMin" class="">Processed Value (PV) Min</label>
+            <div class="form-group">
+              <div [ngClass]="{'has-error': (( inputOutput.get('pvMin').dirty) &&
+              inputOutput.get('pvMin').errors)}">
+                <input (mouseleave)="pvMinValidation()" type="text" class="form-control m-input"
+                  i18n-placeholder="Processed Value Min placeholder|Enter Processed Value (PV) Minimun@@processedValueMin.placeholder" formControlName="pvMin"
+                  placeholder="Enter Processed Value (PV) Min">
+              </div>
+              <span class="help-block" *ngIf="((inputOutput.get('pvMin').dirty) &&
+              inputOutput.get('pvMin').errors)">
+                <span i18n="Message|Please enter only Numbers@@processedValueMin.message" *ngIf="inputOutput.get('pvMin').errors.pattern"
+                  class="display_inherit">
+                  Please enter only Numbers
+                </span>
+              </span>
+              <span i18n="Message|Please enter min value lesser than max value@@processedValueMin.message1" *ngIf="pvMinError" class="text-danger">
+                Please enter min value lesser than max value
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label i18n="Processed Value Max|Processed Value Maximum@@processedValueMax" class="">Processed Value (PV) Max</label>
+            <div class="form-group">
+              <div [ngClass]="{'has-error': (( inputOutput.get('pvMax').dirty) &&
+              inputOutput.get('pvMax').errors)}">
+                <input (mouseleave)="pvMaxValidation()" type="text" class="form-control m-input"
+                  i18n-placeholder="Processed Value Max placeholder|Enter Processed Value (PV) Max@@processedValueMax.placeholder" formControlName="pvMax"
+                  placeholder="Enter Processed Value (PV) Max">
+              </div>
+              <span class="help-block" *ngIf="((inputOutput.get('pvMax').dirty) &&
+              inputOutput.get('pvMax').errors)">
+                <span i18n="Message|Please enter only Numbers@@processedValueMax.message" *ngIf="inputOutput.get('pvMax').errors.pattern"
+                  class="display_inherit">
+                  Please enter only Numbers
+                </span>
+              </span>
+              <span i18n="Message|Please enter max value greater than min value@@processedValueMax.message1" *ngIf="pvMaxError" class="text-danger">
+                Please enter max value greater than min value
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="m-form__group row form-group">
+        <div class="col-lg-2 col-md-5">
+          <label i18n="Range Clamping|Range Clamping@@rangeClamping" class="" style="display: block;">Range Clamping</label>
+        </div>
+        <div class="col-lg-10 col-md-7">
+          <mat-checkbox i18n="@@" formControlName="isClampToEuRangeValue" (change)="isClampToEuRange($event)">
+          </mat-checkbox>
+        </div>
+      </div>
+
+      <ng-container *ngIf="rangeExpandCollapse">
+        <div class="m-form__group row">
+          <div class="col-lg-6">
+            <label i18n="Range Value (Min)|Range Value (Minimun)@@rangeValueMin" class="">Range Value (Min)</label>
+            <div class="form-group">
+              <div [ngClass]="{'has-error': (( inputOutput.get('euRangeValueMin').dirty) &&
+              inputOutput.get('euRangeValueMin').errors)}">
+                <input (mouseleave)="minRangeValue()" type="text" class="form-control m-input"
+                  i18n-placeholder="Range Value Min placeholder|Enter Range Value (Min)@@rangeValueMin.placeholder" formControlName="euRangeValueMin"
+                  placeholder="Enter Range Value (Min)">
+              </div>
+              <span class="help-block" *ngIf="((inputOutput.get('euRangeValueMin').dirty) &&
+              inputOutput.get('euRangeValueMin').errors)">
+                <span i18n="Message|Please enter only Numbers@@rangeValueMin.message" *ngIf="inputOutput.get('euRangeValueMin').errors.pattern"
+                  class="display_inherit">
+                  Please enter only Numbers
+                </span>
+              </span>
+              <span i18n="Message|Please enter min value lesser than max value@@rangeValueMin.message1" *ngIf="rangeMinError" class="text-danger">
+                Please enter min value lesser than max value
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label i18n="Range Value (Max)|Range Value (Maximum)@@rangeValueMax" class="">Range Value (Max)</label>
+            <div class="form-group">
+              <div [ngClass]="{'has-error': (( inputOutput.get('euRangeValueMax').dirty) &&
+              inputOutput.get('euRangeValueMax').errors)}">
+                <input (mouseleave)="maxRangeValue()" type="text" class="form-control m-input"
+                  i18n-placeholder="Range Value Max placeholder|Enter Range Value (Max)@@rangeValueMax.placeholder" formControlName="euRangeValueMax"
+                  placeholder="Enter Range Value (Max)">
+              </div>
+              <span class="help-block" *ngIf="((inputOutput.get('euRangeValueMax').dirty) &&
+              inputOutput.get('euRangeValueMax').errors)">
+                <span i18n="Message|Please enter only Numbers@@rangeValueMax.message" *ngIf="inputOutput.get('euRangeValueMax').errors.pattern"
+                  class="display_inherit">
+                  Please enter only Numbers
+                </span>
+              </span>
+              <span i18n="Message|Please enter max value greater than min value@@rangeValueMax.message1" *ngIf="rangeMaxError" class="text-danger">
+                Please enter max value greater than min value
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+</div>

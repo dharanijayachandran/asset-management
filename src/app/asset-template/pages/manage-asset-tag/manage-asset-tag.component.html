@@ -1,0 +1,153 @@
+<div class="row margin_0px rowBox rowBoxFirstLevelHeight p-10">
+  <!-- end page-header -->
+  <div class="col-md-12 p-0">
+    <form [formGroup]="analogAlarmForm">
+      <div class="p-10 mt-n2">
+        <label *ngIf="template" i18n="Tab|Asset Template Name@@assetTempalteName" class="">Asset Template Name</label>
+        <label *ngIf="!template" i18n="Tab|Asset Name@@assetName" class="">Asset Name</label>
+        <div class="col-md-4 p-0">
+          <input type="text" formControlName="assetTemplateName" class="form-control m-input" readonly>
+        </div>
+      </div>
+    </form>
+    <div class="clearfix"></div>
+    <!-- begin row -->
+    <!-- begin nav-tabs -->
+    <ngb-tabset type="pills" (tabChange)="beforeChange($event)">
+      <ngb-tab id="manageAnanlogListView">
+        <ng-template ngbTabTitle>
+          <span i18n="Tab|Analog@@analog" class="d-sm-none">Analog</span>
+          <span i18n="Tab|Analog@@analog" class="d-sm-block d-none">Analog</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <!-- <div class="header_Underline pt-1"></div> -->
+          <div>
+            <!-- Analog template list view -->
+            <div *ngIf="displayPage == 'analogTemplateTagList'" class="rowBox p-10 custom-rounded-bottom">
+              <app-analog-tag-list (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+              </app-analog-tag-list>
+            </div>
+
+            <!-- Analog template form view -->
+            <div *ngIf="displayPage == 'analogTemplateFormView'">
+              <app-analog-tag-form-view (navigateTemplate)="gettingDisplayPage($event)"
+                (tabName)="tabNameMessage($event)"></app-analog-tag-form-view>
+            </div>
+
+
+            <!-- Analog form preview -->
+            <div *ngIf="displayPage == 'analogTemplatePreview'">
+              <app-analog-tag-preview (navigateTemplate)="gettingDisplayPage($event)"
+                (tabName)="tabNameMessage($event)"></app-analog-tag-preview>
+            </div>
+
+
+            <!-- Analog form View -->
+            <div *ngIf="displayPage == 'assetTemplateView'" class="rowBox custom-rounded-bottom">
+              <app-analog-tag-view (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+              </app-analog-tag-view>
+            </div>
+
+
+            <app-manage-alarm-analog-asset-tag-list *ngIf="displayPage == 'manageAnalogAlarmList'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-manage-alarm-analog-asset-tag-list>
+
+            <app-manage-alarm-analog-asset-tag *ngIf="displayPage == 'manageAnalogAlarm'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-manage-alarm-analog-asset-tag>
+          </div>
+        </ng-template>
+      </ngb-tab>
+
+      <ngb-tab id="manageDiscrete">
+        <ng-template ngbTabTitle>
+          <span i18n="Tab|Discrete@@discrete" class="d-sm-none">Discrete</span>
+          <span i18n="Tab|Discrete@@discrete" class="d-sm-block d-none">Discrete</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <!-- <div class="header_Underline  pt-1"></div> -->
+          <div id="tags">
+            <!-- Discrete tag list view -->
+            <div class="rowBox p-10 custom-rounded-bottom" *ngIf="displayPage == 'discreteTagList'">
+              <app-discrete-tag-list (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+              </app-discrete-tag-list>
+            </div>
+
+
+            <!-- Discrete template form view -->
+            <app-discrete-tag-form *ngIf="displayPage == 'discreteTemplateForm'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-discrete-tag-form>
+
+            <!-- Discrete form preview -->
+            <app-discrete-tag-preview *ngIf="displayPage == 'discreteTagPreview'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-discrete-tag-preview>
+
+            <!-- Discrete form View -->
+            <app-discrete-tag-view *ngIf="displayPage == 'discreteTagView'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-discrete-tag-view>
+
+            <!--Manage Discrete Tag Input/Output form View -->
+            <app-manage-discrete-asset-tag-io *ngIf="displayPage == 'manageDiscreteTagForm'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-manage-discrete-asset-tag-io>
+
+            <!--Manage Discrete Tag Input/Output preview View -->
+            <app-manage-discrete-asset-tag-io-preview *ngIf="displayPage == 'manageDiscreteTagPreview'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-manage-discrete-asset-tag-io-preview>
+
+            <app-manage-alarm-discrete-asset-tag *ngIf="displayPage == 'manageAlarmDiscreteTag'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-manage-alarm-discrete-asset-tag>
+
+            <div class="rowBox p-10 custom-rounded-bottom" *ngIf="displayPage == 'manageAlarmDiscreteTagList'">
+              <app-manage-alarm-discrete-asset-tag-list (navigateTemplate)="gettingDisplayPage($event)"
+                (tabName)="tabNameMessage($event)">
+              </app-manage-alarm-discrete-asset-tag-list>
+            </div>
+
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab id="manageAlarmConfigListView">
+        <ng-template ngbTabTitle>
+          <span i18n="Tab|Analog@@analog" class="d-sm-none">Alarm Config</span>
+          <span i18n="Tab|Analog@@analog" class="d-sm-block d-none">Alarm Config</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div>
+
+            <div class="rowBox p-10 custom-rounded-bottom" *ngIf="displayPage == 'alarmConfigList'">
+              <asset-management-alarm-config-list (navigateTemplate)="gettingDisplayPage($event)"
+                (tabName)="tabNameMessage($event)">
+              </asset-management-alarm-config-list>
+            </div>
+
+            <app-manage-alarm-analog-asset-tag *ngIf="displayPage == 'manageAnalogAlarm'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-manage-alarm-analog-asset-tag>
+
+            <app-manage-alarm-discrete-asset-tag *ngIf="displayPage == 'manageAlarmDiscreteTag'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-manage-alarm-discrete-asset-tag>
+
+            <app-manage-alarm-analog-asset-tag-list *ngIf="displayPage == 'manageAnalogViewData'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-manage-alarm-analog-asset-tag-list>
+
+            <app-manage-alarm-discrete-asset-tag-list *ngIf="displayPage == 'manageDiscreteViewData'"
+              (navigateTemplate)="gettingDisplayPage($event)" (tabName)="tabNameMessage($event)">
+            </app-manage-alarm-discrete-asset-tag-list>
+
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+    <!-- end nav-tabs -->
+  </div>
+</div>
+<!-- end row -->

@@ -1,0 +1,10 @@
+<ng-container *ngIf="sidebarMenuFlag">
+    <div class="content" [class.show]="sideMenuBarStatus">
+        <router-outlet></router-outlet>
+    </div>
+</ng-container>
+<ng-container *ngIf="topMenu">
+    <div class="top-content"> 
+        <router-outlet></router-outlet>
+    </div>
+</ng-container>

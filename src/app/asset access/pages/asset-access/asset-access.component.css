@@ -1,0 +1,31 @@
+legend.headerTitle{
+    font-family: 'IBMPlexSans-Medium';
+    font-size: 15px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: white;
+    border-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+.panel-header{
+    background: #032d42;
+}
+/* newww */
+.panel-left{
+    background: white;
+}
+
+.mat-radio-button{
+    padding-bottom: 5px;
+}
+.mat-checkbox-layout{
+    white-space:initial;
+}
+.form-control, div.c-btn{
+    height: 27px!important;
+    padding: 5px!important;
+}

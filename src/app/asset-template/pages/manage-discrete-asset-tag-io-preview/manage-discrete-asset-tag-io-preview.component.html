@@ -1,0 +1,36 @@
+<!-- Click to view preview starts here -->
+
+
+<div class="row margin_0px rowBox">
+  <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+      <div class="formReadMode">
+        <div class="form-group-custom1">
+          <legend i18n="Page header|Manage Discrete Asset Tag Details@@manageDiscreteAssetTagDetails" class="m-b-15">Manage Discrete Asset Tag Details</legend>
+          <app-manage-discrete-asset-tag-io-read-view (navigateTemplate)="backButton($event)"></app-manage-discrete-asset-tag-io-read-view>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton($event)" i18n="Back button|Back@@back"> Back
+            </button>
+            &nbsp;
+            <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit" (click)="manageDiscreteAssettagIo()">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Click to preview Analog Tags ends here -->
+
+
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationSuccess)="redirectTo()"></app-modal-notification>

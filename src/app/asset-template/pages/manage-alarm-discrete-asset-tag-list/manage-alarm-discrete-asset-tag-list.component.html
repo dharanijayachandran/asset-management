@@ -1,0 +1,318 @@
+<div class="row margin_0px">
+  <div class="col-md-12 p-0">
+    <form [formGroup]="analogAlarmForm">
+      <div class="ml-0 mb-3">
+        <legend i18n="Header|Alarm Configuration for Discrete Asset Tag@@alarmConfigurationForDiscreteAssetTag"
+          class="m-b-15">Alarm Configuration for Discrete Asset Tag</legend>
+        <label i18n="Asset Tag Name|Asset Tag Name@@assetTagName" class="">Asset Tag Name</label>
+        <div class="col-md-4 p-0">
+          <input type="text" formControlName="assetTagName" readonly class="form-control m-input">
+        </div>
+      </div>
+    </form>
+    <div class="clearfix"></div>
+    <div>
+      <div class="container mat-elevation-z8 panel panel-inverse mb-0" style="position: relative" *ngIf="tableView">
+        <app-panel-user i18n-name="Panel header|State Alarms@@stateAlarms" name="State Alarms" #panelHeader
+          (refreshTableList)="refreshTableListFunction();panelHeader.setTableDasourceAsDefault(this.dataSource)"
+          (scrollBarDirective)="onPaginateViewScrollToTop()" (eventEmitToPageNaviagte)="addAlarmConfig()">
+
+          <a backButton href="javascript:;" i18n-matTooltip="Back button|Back to Discrete Tags@@backToDiscreteTags"
+            matTooltip="Back to Discrete Tags" class="btn btn-xs btn-icon btn-circle btn-default backButton"
+            (click)="backToDiscreteTags()">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+          </a>
+
+          <!-- Input field for search -->
+          <input searchfield style="display: none;" id="filter" class="form-control m-input ml-2"
+            (keyup)="panelHeader.applyFilter($event.target.value, dataSource)"
+            i18n-placeholder="Search|Search placeholder@@search" matInput placeholder="Search.." />
+
+          <!-- Search button -->
+          <a searchButton href="javascript:;" i18n-matTooltip="Search button|Click to Search@@ClickToSearch"
+            matTooltip="Click to Search" class="btn btn-xs btn-icon btn-circle btn-default"
+            (click)="panelHeader.searchButton(this.dataSource)">
+            <i class="fa fa-search"></i>
+          </a>
+          <!-- Add New button -->
+          <a addNewButton i18n-matTooltip="@@AddNew" (click)="addAlarmConfig()" matTooltip="Click to Add New"
+            class="btn btn-xs btn-icon btn-circle btn-warning">
+            <i class="fa fa-plus"></i>
+          </a>
+          <div class="position-relative">
+            <div class="ps position-relative" appScrollbarDirective
+              *ngIf="dataSource && dataSource.data.length">
+              <ng-container *ngTemplateOutlet="matTableForDiscreteAlarm"></ng-container>
+            </div>
+
+            <div class="table-responsive" *ngIf="!dataSource || !dataSource.data.length">
+              <ng-container *ngTemplateOutlet="matTableForDiscreteAlarm"></ng-container>
+            </div>
+            <!-- Loader image -->
+            <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+              align="center">
+              <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+            </div>
+            <h3 i18n="No records found text|No records found@@noRecordsFound"
+              *ngIf="(NoRecordsFound && !showLoaderImage) || (dataSource && !dataSource.filteredData.length && !showLoaderImage)"
+              class="text-center noRecordsFound">
+              No records found!
+            </h3>
+            <ng-container>
+              <app-mat-table-paginator [dataSource]="this.dataSource" #myPaginatorChildComponent
+                (paginator)="matTablePaginator($event)"
+                (scrollBarDirective)="onPaginateViewScrollToTop()"></app-mat-table-paginator>
+              <!-- <mat-paginator [hidden]="NoRecordsFound" #myPaginator
+                                [length]="dataSource && dataSource.data.length" [pageSize]="pageSize"
+                                [pageSizeOptions]="[100, 500, 1000, 5000]" showFirstLastButtons>
+                            </mat-paginator> -->
+            </ng-container>
+          </div>
+
+          <ng-template #matTableForDiscreteAlarm>
+            <table mat-table [dataSource]="dataSource" class="table table-striped table-bordered" matSort>
+              <ng-container matColumnDef="id">
+                <th i18n="Table id|Sno@@sNo" mat-header-cell *matHeaderCellDef mat-sort-header style="display: none">
+                  S.No.
+                </th>
+                <td mat-cell *matCellDef="let element; let i = index;" style="display: none">
+                  {{ (i+1) + (myPaginator.pageIndex * myPaginator.pageSize) }}</td>
+              </ng-container>
+              <ng-container matColumnDef="sNo">
+                <th i18n="Table id|Sno@@sNo" mat-header-cell *matHeaderCellDef>S.No.</th>
+                <td mat-cell *matCellDef="let element; let i = index;">
+                  {{ (i+1) + (myPaginator.pageIndex * myPaginator.pageSize) }}</td>
+
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th i18n="Table|Name@@name" mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="state">
+                <th i18n="Table|State@@state" mat-header-cell *matHeaderCellDef mat-sort-header> State
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element.stateName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="severity">
+                <th i18n="Table|Severity@@severity" mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Severity </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.severityName}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <th i18n="Table|Action@@action" mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element">
+
+                  <a (click)="clickToView(element)">
+                    <i class="fas fa-md fa-fw m-r-10 fa-eye" alt="view"
+                      i18n-matTooltip="View button|Click to View tooltip@@clickToView" matTooltip="Click to View"></i>
+                  </a>
+
+                  <a (click)="updateAlarmConfig(element)">
+                    <i class="fas fa-md fa-fw m-r-10 fa-edit" alt="edit"
+                      i18n-matTooltip="Edit button|Click to Edit tooltip@@clickToEdit" matTooltip="Click to Edit"></i>
+                  </a>
+
+
+                  <a class="" (click)="deleteAlarmConfig(element.id)">
+                    <i class="fas fa-md fa-fw m-r-10 fa-trash-alt" alt="delete"
+                      i18n-matTooltip="Delete button|Click to Delete tooltip@@clickToDelete"
+                      matTooltip="Click to Delete"></i>
+                  </a>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </ng-template>
+        </app-panel-user>
+
+
+
+      </div>
+      <div class="formReadMode" *ngIf="formView">
+        <div class="path"></div>
+        <legend i18n="Header|Alarm Config Details@@alarmConfigDetails" class="m-b-15">Alarm Config Details
+        </legend>
+        <div class="form-row">
+
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="Alarm Name|Alarm Name@@alarmName" class="">Alarm Name</label>
+            <p>
+              {{alarmConfig.name}}
+            </p>
+          </div>
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="State|State@@state" class="">State</label>
+
+            <p *ngIf="!stateNameDisplay">{{alarmConfig.stateName}}</p>
+            <p *ngIf="stateNameDisplay">{{stateName}}</p>
+
+          </div>
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="Severity|Severity@@alarmSevierity" class="">Severity</label>
+
+            <p>{{alarmConfig.severityName}}</p>
+
+          </div>
+        </div>
+        <div class="form-row">
+
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="Time Deadband|Time Deadband(in Sec)@@timeDeadband" class="">Time Deadband</label>
+            <p>
+              {{alarmConfig.timeDeadBandInSec | hyphen}}
+            </p>
+          </div>
+          <div class="form-group col-sm-6 col-md-3">
+
+            <div class="row">
+              <div class="col-md-6">
+                <label i18n="Radio button|On Raise Alarm@timeDeadBandOnRaise" class="">On Raise
+                  Alarm</label>
+                <p>
+                  {{alarmConfig.timeDeadBandOnRaise?"Yes":"No"}}
+                </p>
+              </div>
+              <div class="col-md-6">
+                <label i18n="Radio button|On Clear Alarm@timeDeadBandOnClear" class="">On Clear
+                  Alarm</label>
+                <p>
+                  {{alarmConfig.timeDeadBandOnClear?"Yes":"No"}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="Alarm Message|Alarm Message@@alarmMessage" class="">Alarm Message</label>
+            <p>
+              {{alarmConfig.alarmMessage}}
+            </p>
+          </div>
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="Clear Alarm Message|Clear Alarm Message@@clearAlarmMessage" class="">Clear Alarm
+              Message</label>
+            <p>
+              {{alarmConfig.clearAlarmMessage | hyphen}}
+            </p>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="ValidFromDate|ValidFromDate@@ValidFromDate" class="">Valid From date</label>
+            <p>
+              {{alarmConfig.validFromDate | date:'dd/MM/yyyy'}}
+            </p>
+          </div>
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="validTillDate|validTillDate@@validTillDate" class="">valid Till Date</label>
+            <p>
+              {{alarmConfig.validTillDate | date:'dd/MM/yyyy'}}
+            </p>
+          </div>
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="StartTime|StartTime@@StartTime" class="">StartTime</label>
+            <p>
+              {{alarmConfig.startTime | hyphen}}
+            </p>
+          </div>
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="EndTime|EndTime@@EndTime" class="">EndTime</label>
+            <p>
+              {{alarmConfig.endTime | hyphen}}
+            </p>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-sm-6 col-md-3">
+            <label i18n="Status|Status@@status" class="">Status</label>
+            <p>
+              {{alarmConfig.status}}
+            </p>
+          </div>
+        </div>
+        <span *ngIf="null != alarmConfig.alarmNotificationConfigs && alarmConfig.alarmNotificationConfigs.length !=0">
+          <div class="path"></div>
+          <legend i18n="Header|Alarm Notification Config Details@@analogAlarmNotificationConfig" class="m-b-15">Alarm
+            Notification Config Details</legend>
+          <div *ngFor="let alarmNotifig of alarmConfig.alarmNotificationConfigs">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label i18n="Notification|Notification@@notification" class="">Notification</label>
+                <p>
+                  {{alarmNotifig.notificationMediaName}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label i18n="Notification Group|Notification Group@@notificationGroup" class="">Notification
+                  Group</label>
+                <p>
+                  {{alarmNotifig.notificationGroupName}}
+                </p>
+              </div>
+
+
+            </div>
+            <div class="path"></div>
+            <legend i18n="Header|Alarm State Notification@@alarmStateNotification" class="m-b-15">
+              {{alarmNotifig.notificationMediaName}}
+              Alarm State Notification</legend>
+            <div class="form-row" *ngFor="let state of alarmNotifig.alarmStateNotificationConfigs">
+
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Alarm State|Alarm State@@alarmState" class="">Alarm State</label>
+                <p>
+                  {{state.alarmStateName | hyphen}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Notification Group|Notification Group@@notificationGroup" class="">Notification
+                  Group</label>
+                <p>
+                  {{state.notificationGroupName | hyphen}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Repeat Notification Interval|Repeat Notification Interval@@repeatNotificationInterval)"
+                  class="">Repeat Notification Interval(in
+                  Sec)</label>
+                <p>
+                  {{state.notificationRepeatIntervalSec | hyphen}}
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </span>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="path finalLine"></div>
+          </div>
+        </div>
+        <div class="row" style=" text-align: right; padding: 15px 0 5px;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton()"
+              i18n="Back button|Back@@back">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+<!--  Discrete Tag List view ends here -->
+
+<!-- Global modal notification component selector  for deletion and after deletetion success, success with failed-->
+<app-modal-notification (modelNotificationDanger)="confirmDelete();"
+  (modelNotificationSuccess)="refreshTableListFunction()"></app-modal-notification>

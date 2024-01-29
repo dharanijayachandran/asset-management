@@ -1,0 +1,299 @@
+<div class="form-group-custom1">
+  <legend i18n="Page header|Analog Tag Details@@analogTagDetails" class="m-b-15">Analog Tag Details</legend>
+  <div class="form-row">
+    <a (click)="backButton('assetTag')" class="edit_section">
+      <img src="/assets/img/action/edit.png" alt="Edit Analog Tag Details"
+        i18n-matTooltip="Image matTooltip|Click to Edit Analog Tag Details@@clickToEditAnalogTagDetails" matTooltip="Click to Edit Analog Tag Details">
+    </a>
+    <div class="form-group col-sm-6 col-md-4">
+      <label i18n="Name|Name@@name" class="">Name</label>
+      <p>
+        {{assetTag.name}}
+      </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+      <label i18n="Description|Description@@description" class="">Description</label>
+      <p>
+        {{assetTag.description | hyphen}}
+      </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+      <label i18n="Data Type|Data Type@@dataType" class="">Data Type</label>
+      <p>
+        {{assetTag.dataTypeName}}
+      </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+      <label i18n="Engineering Unit|Engineering Unit@@engineeringUnit" class="">Engineering Unit</label>
+      <p>
+        {{assetTag.engUnitName | hyphen}}
+      </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+      <label i18n="Organization Standard Tag|Organization Standard Tag@@organizationStandardTag" class="">Organization Standard Tag</label>
+      <p>
+        {{assetTag.orgAssetStandardTagName | hyphen}}
+      </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+      <label  class="">Order</label>
+      <p *ngIf="assetTag.displayOrder">
+      {{ assetTag.displayOrder }} 
+      </p>
+      <p *ngIf="null == assetTag.displayOrder">
+        - 
+        </p>
+    </div>
+  </div>
+
+  <!-- Input configuration starts here--------------------- -->
+  <ng-container *ngIf="assetTag.isInputEnabled != false">
+    <div class="path"></div>
+    <legend i18n="Header|Input Configuration@@inputConfiguration" class="m-b-15">Input Configuration</legend>
+    <div class="form-row">
+      <a (click)="backButton('inputConfiguration')" class="edit_section">
+        <img src="/assets/img/action/edit.png" alt="Edit Input Configuration"
+          i18n-matTooltip="Image matTooltip|Click to Edit Input Configuration@@clickToEditInputConfiguration" matTooltip="Click to Edit Input Configuration">
+      </a>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Input Enabled|Input Enabled@@inputEnabled" class="">Input Enabled</label>
+        <p>
+          {{assetTag.isInputEnabled ? "Yes": "No"}}
+        </p>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="{{this.gatewayAndTemplateLableName}}|{{this.gatewayAndTemplateLableName}}@@{{this.gatewayAndTemplateLableName}}" class="">{{this.gatewayAndTemplateLableName}}</label>
+        <p>
+          {{assetTemplateDetail.gatewayTemplateName}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="I/O Tag|Input/Output Tag@@iOTag" class="">I/O Tag</label>
+        <p>
+          {{ inputgatewayIOTagName?.length > 0 ? inputgatewayIOTagName[0].name : '-'}}
+        </p>
+      </div>
+    </div>
+
+    <ng-container *ngIf="assetTag.assetInputGatewayIoTagAnalog.isScalingEnabled != false">
+      <div class="path"></div>
+      <legend i18n="Header|Scaling Configuration@@scalingConfiguration" class="m-b-15">Scaling Configuration</legend>
+      <div class="form-row">
+        <a (click)="backButton('scalingConfig')" class="edit_section">
+          <img src="/assets/img/action/edit.png" alt="Edit Scaling Configuration"
+            i18n-matTooltip="Image matTooltip|Click to Edit Scaling Configuration@@clickToEditScalingConfiguration" matTooltip="Click to Edit Scaling Configuration">
+        </a>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Scaling Enabled|Scaling Enabled@@scalingEnabled" class="">Scaling Enabled</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.isScalingEnabled ? "Yes": "No"}}
+          </p>
+        </div>
+      </div>
+      <!-- Scaling Enabled check this content will show -->
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Conversion Mode|Conversion Mode@@conversionMode" class="">Conversion Mode</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.conversionMode | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Slope/Gradiant|Slope/Gradiant@@slope/Gradiant" class="">Slope/Gradiant</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.linearConversionSlope | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Intercept|Intercept@@intercept" class="">Intercept</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.linearConversionIntercept | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Field Value Min|Field Value Minimun@@fieldValueMin" class="">Field Value (FV) Min</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.fvMin | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Processed Value Min|Processed Value Minimun@@processedValueMin" class="">Processed Value (PV) Min</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.pvMin | hyphen}}
+
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Field Value Max|Field Value Maximum@@fieldValueMax" class="">Field Value (FV) Max</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.fvMax | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Processed Value Max|Processed Value Maximum@@processedValueMax" class="">Processed Value (PV) Max</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.pvMax | hyphen}}
+          </p>
+        </div>
+      </div>
+      <!-- Scaling Enabled check this content will show ends-->
+    </ng-container>
+
+    <ngcontainer *ngIf="assetTag.assetInputGatewayIoTagAnalog.isClampToEuRangeValue != false">
+      <!-- Range Clamping -->
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Range Clamping|Range Clamping@@rangeClamping" class="" style="display: block;">Range Clamping</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.isClampToEuRangeValue ? "Yes": "No"}}
+          </p>
+        </div>
+      </div>
+      <!-- Range Clamping Enabled check this content will show -->
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Range Value (Min)|Range Value (Minimun)@@rangeValueMin" class="">Range Value (Min)</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.euRangeValueMin | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Range Value (Max)|Range Value (Maximum)@@rangeValueMax" class="">Range Value (Max)</label>
+          <p>
+            {{assetTag.assetInputGatewayIoTagAnalog.euRangeValueMax | hyphen}}
+          </p>
+        </div>
+      </div>     
+    </ngcontainer>
+
+  </ng-container>
+  <!-- Input configuration ends here--------------------- -->
+
+  <!-- Output configuration starts here--------------------- -->
+  <ng-container *ngIf="assetTag.isOutputEnabled != false">
+    <div class="path"></div>
+    <legend i18n="Header|Output Configuration@@outputConfiguration" class="m-b-15">Output Configuration</legend>
+    <div class="form-row">
+      <a (click)="backButton('outputConfiguration')" class="edit_section">
+        <img src="/assets/img/action/edit.png" alt="Edit Input Configuration"
+          i18n-matTooltip="Image matTooltip|Click to Edit Input Configuration@@clickToEditInputConfiguration" matTooltip="Click to Edit Input Configuration">
+      </a>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Output Enabled|Output Enabled@@outputEnabled" class="">Output Enabled</label>
+        <p>
+          {{assetTag.isOutputEnabled ? "Yes": "No"}}
+        </p>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Gateway Template|Gateway Template@@gatewayTemplate" class="">Gateway Template</label>
+        <p>
+          {{assetTemplateDetail.gatewayTemplateName}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-4">
+        <label i18n="I/O Tag|Input/Output Tag@@iOTag" class="">I/O Tag</label>
+        <p>
+          {{ outputgatewayIOTagName?.length > 0 ? outputgatewayIOTagName[0].name : '-'}}
+          <!-- {{assetTag.assetOutputGatewayIoTagAnalog.gatewayIOTagName}} -->
+        </p>
+      </div>
+    </div>
+
+    <ng-container *ngIf="assetTag.assetOutputGatewayIoTagAnalog.isScalingEnabled != false">
+      <div class="path"></div>
+      <legend i18n="Header|Scaling Configuration@scalingConfiguration" class="m-b-15">Scaling Configuration</legend>
+      <div class="form-row">
+        <a (click)="backButton('outputScalingConfig')" class="edit_section">
+          <img src="/assets/img/action/edit.png" alt="Edit Scaling Configuration"
+            i18n-matTooltip="Image matTooltip|Click to Edit Scaling Configuration@@clickToEditScalingConfiguration" matTooltip="Click to Edit Scaling Configuration">
+        </a>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Scaling Enabled|Scaling Enabled@@scalingEnabled" class="">Scaling Enabled</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.isScalingEnabled ? "Yes": "No"}}
+          </p>
+        </div>
+      </div>
+      <!-- Scaling Enabled check this content will show -->
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Conversion Mode|Conversion Mode@@conversionMode" class="">Conversion Mode</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.conversionMode | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Slope/Gradiant|Slope/Gradiant@@slope/Gradiant" class="">Slope/Gradiant</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.linearConversionSlope | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Intercept|Intercept@@intercept" class="">Intercept</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.linearConversionIntercept | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Field Value Min|Field Value Minimun@@fieldValueMin" class="">Field Value (FV) Min</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.fvMin | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Processed Value Min|Processed Value Minimun@@processedValueMin" class="">Processed Value (PV) Min</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.pvMin | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Field Value Max|Field Value Maximum@@fieldValueMax" class="">Field Value (FV) Max</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.fvMax | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Processed Value Max|Processed Value Maximum@@processedValueMax" class="">Processed Value (PV) Max</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.pvMax | hyphen}}
+          </p>
+        </div>
+      </div>
+      <!-- Scaling Enabled check this content will show ends-->
+    </ng-container>
+
+    <ngcontainer *ngIf="assetTag.assetOutputGatewayIoTagAnalog.isClampToEuRangeValue != false">
+      <!-- Range Clamping -->
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Range Clamping|Range Clamping@@rangeClamping" class="" style="display: block;">Range Clamping</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.isClampToEuRangeValue ? "Yes": "No"}}
+          </p>
+        </div>
+      </div>
+      <!-- Range Clamping Enabled check this content will show -->
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Range Value (Min)|Range Value (Minimun)@@rangeValueMin" class="">Range Value (Min)</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.euRangeValueMin | hyphen}}
+          </p>
+        </div>
+        <div class="form-group col-sm-6 col-md-4">
+          <label i18n="Range Value (Max)|Range Value (Maximum)@@rangeValueMax" class="">Range Value (Max)</label>
+          <p>
+            {{assetTag.assetOutputGatewayIoTagAnalog.euRangeValueMax | hyphen}}
+          </p>
+        </div>
+      </div>
+    </ngcontainer>
+
+    <!-- output configuration ends here--------------------- -->
+  </ng-container>
+
+</div>

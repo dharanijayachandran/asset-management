@@ -1,0 +1,296 @@
+<div class="row margin_0px rowBox">
+  <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+      <!-- Discrete form view starts here  -->
+      <form [formGroup]="discreteForm" novalidate (ngSubmit)="previewMode()">
+        <div class="form-group-custom1">
+          <legend i18n="Header|Discrete Tag Details@@discreteDetails" class="m-b-15">Discrete Tag Details</legend>
+          <div class="formBodyCustom1" id="discreteDetail">
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Name|Name@@name*" class="">Name<span class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((discreteForm.get('name').touched ||
+                              discreteForm.get('name').dirty) &&
+                              discreteForm.get('name').errors)}">
+                    <input (keyup)="onKey($event)" type="text" formControlName="name" class="form-control m-input"
+                      i18n-placeholder="Discrete Tag Name placeholder|Enter Discrete Tag Name@@discreteTagName.placeholder"
+                      placeholder="Enter Discrete Tag Name">
+                    <span class="help-block" *ngIf="((discreteForm.get('name').touched ||
+                                        discreteForm.get('name').dirty) &&
+                                        discreteForm.get('name').errors)">
+                      <span i18n="Message|Please enter Discrete Tag Name@@discreteTagName.message"
+                        *ngIf="(discreteForm.get('name').errors.required || discreteForm.get('name').errors.whitespace)">
+                        Please enter Discrete Tag Name
+                      </span>
+                      <span i18n="Message|Please enter less than 100 Characters@@discreteTagName.message1"
+                        *ngIf="discreteForm.get('name').errors.maxlength" class="display_inherit">
+                        Please enter less than 100 Characters
+                      </span>
+                      <span i18n="Message|Please enter valid Characters@@discreteTagName.message3"
+                        *ngIf="discreteForm.get('name').errors.pattern">
+                        Please enter valid Characters
+                      </span>
+                      <span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <label i18n="Data Type|Data Type@@dataType*" class="">Data Type<span
+                    class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((discreteForm.get('dataTypeId').touched ||
+                  discreteForm.get('dataTypeId').dirty) &&
+                  discreteForm.get('dataTypeId').errors)}">
+                    <!-- <select formControlName="dataTypeId" id='dataTypeId' class="form-control m-input">
+                      <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                      <option [ngValue]="dataType.id" *ngFor="let dataType of dataTypeList">{{dataType.name}}</option>
+                    </select> -->
+
+                    <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='dataTypeId'
+                      name="dataTypeId" formControlName="dataTypeId" [dataSource]='dataTypeList'
+                      [placeholder]='dataTypeWaterMark' [fields]='dataTypeFields' [popupHeight]='height'
+                      [sortOrder]="sortDropDown" (filtering)='onFilteringDataType($event)'
+                      [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                      (change)='dataTypeChange($event)' [locale]='locale'></ejs-dropdownlist>
+                    <span class="help-block" *ngIf="((discreteForm.get('dataTypeId').touched ||
+                          discreteForm.get('dataTypeId').dirty) &&
+                          discreteForm.get('dataTypeId').errors)">
+                      <span i18n="Message|Please select Data Type@@GatewayType.message"
+                        *ngIf="discreteForm.get('dataTypeId').errors.required" class="text-danger">
+                        Please select Data Type
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Description|Description@@description" class="">Description</label>
+                <div class="form-group">
+                  <textarea type="text" id="description" formControlName="description"
+                    class="form-control m-input textAreaHeight"
+                    i18n-placeholder="Description placeholder|Enter Description@@description.placeholder"
+                    placeholder="Enter Description"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Organization Standard Tag|Organization Standard Tag@@organizationStandardTag"
+                  class="">Organization Standard
+                  Tag</label>
+                <div class="form-group">
+                  <div>
+                    <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0"
+                      [value]='orgAssetStandardTagId' name="orgAssetStandardTagId"
+                      formControlName="orgAssetStandardTagId" [dataSource]='assetStandardTagList'
+                      [placeholder]='assetStandardTagMark' [fields]='assetStandardTagFields' [popupHeight]='height'
+                      [sortOrder]="sortDropDown" (filtering)='onFilteringAssetStandardTag($event)'
+                      [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                      (change)='assetStandardTagChange($event)' [locale]='locale'></ejs-dropdownlist>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label>Order</label>
+                <input type="number" formControlName="displayOrder" class="form-control m-input"
+                  placeholder="Enter Discrete Tag Order" >
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Status|Status@@status">Status</label>
+                <div class="form-group">
+                  <mat-radio-group formControlName="status">
+                    <mat-radio-button value="Active" i18n="Radio button|Active@@active" style="margin-right: 20px;">
+                      Active
+                    </mat-radio-button>
+                    <mat-radio-button value="In_Active" i18n="Radio button|InActive@@inActive">In-Active
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="col-lg-6"></div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <app-panel-user class="panel-header" i18n-name="Panel header|List of Asset Tag States@@listOfAssetTagStates"
+            name="List of Asset Tag States" #panelHeader (refreshTableList)="refreshTableListFunction()"
+            (eventEmitToPageNaviagte)="addRow()">
+            <!-- Add New button -->
+            <a addNewButton i18n="Add Row button|Click to Add Row@@addRow" (click)="addRow()"
+              matTooltip="Click to Add Row" class="btn btn-xs btn-icon btn-circle btn-warning">
+              <i class="fa fa-plus"></i>
+            </a>
+
+          </app-panel-user>
+
+          <div class="position-relative">
+            <div class="table-responsive ps position-relative" appScrollbarDirective
+              *ngIf="dataSource && dataSource.data.length">
+              <table mat-table [dataSource]="dataSource" class="table table-striped table-bordered"
+                formArrayName="assetTagDiscreteState">
+                <!-- Row definitions -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                <tr mat-row *matRowDef="let element; let i = index; columns: displayedColumns;"></tr>
+                <!-- Column definitions -->
+                <!-- <ng-container matColumnDef="id">
+                  <th i18n="@@SNo" mat-header-cell *matHeaderCellDef style="display: none!important">S.No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index;" style="display: none">
+                    {{ (i+1)}}</td>
+                </ng-container> -->
+                <ng-container matColumnDef="sNo">
+                  <th i18n="Table id|Sno@@sNo" mat-header-cell *matHeaderCellDef>S.No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index;">
+                    {{ (i+1)}}</td>
+                </ng-container>
+                <ng-container matColumnDef="assetTagState">
+                  <th i18n="Table|Asset Tag State@@assetTagState" mat-header-cell *matHeaderCellDef> Asset Tag State
+                  </th>
+                  <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                    <input type="text" formControlName="name"
+                      i18n-placeholder="Asset Tag State|Enter Asset Tag State@@assetTagState"
+                      placeholder="Enter Asset Tag State" class="form-control">
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="numericValue">
+                  <th i18n="Table|Numeric Value@@numericValueTable*" mat-header-cell *matHeaderCellDef> Numeric
+                    Value<span class="text-danger">*
+                    </span> </th>
+                  <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                    <div [ngClass]="{'has-error': ((assetTagDiscreteState.controls[i].get('numericValue').touched ||
+                    assetTagDiscreteState.controls[i].get('numericValue').dirty) &&
+                    assetTagDiscreteState.controls[i].get('numericValue').errors)}">
+                      <input type="text" formControlName="numericValue"
+                        #numericValueId
+                        i18n-placeholder="Numeric Value placeholder|Enter Numeric Value@@numericValue.placeholder"
+                        placeholder="Enter Numeric Value" class="form-control">
+
+                      <span class="help-block" *ngIf="((assetTagDiscreteState.controls[i].get('numericValue').touched ||
+                      assetTagDiscreteState.controls[i].get('numericValue').dirty) &&
+                      assetTagDiscreteState.controls[i].get('numericValue').errors)"><span
+                          i18n="Message|Numeric Value is required@@numericValue.message"
+                          *ngIf="assetTagDiscreteState.controls[i].get('numericValue').errors.required">
+                          Numeric Value is required
+                        </span>
+                        <span i18n="Message|Enter only numbers@@numericValue.message1"
+                          *ngIf="assetTagDiscreteState.controls[i].get('numericValue').errors.pattern">
+                          Enter only numbers
+                        </span>
+                      </span>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="commandable">
+                  <th i18n="Table|Commandable@@commandable" mat-header-cell *matHeaderCellDef> Commandable<span
+                      class="text-danger">*
+                    </span> </th>
+                  <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                    <div [ngClass]="{'has-error': ((assetTagDiscreteState.controls[i].get('isCommandable').touched ||
+                    assetTagDiscreteState.controls[i].get('isCommandable').dirty) &&
+                    assetTagDiscreteState.controls[i].get('isCommandable').errors)}">
+                      <select formControlName="isCommandable" class="form-control m-input">
+                        <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                        <option *ngFor="let commandableObj of commandableList" [ngValue]="commandableObj">
+                          {{commandableObj ? "Yes": "No"}}</option>
+                      </select>
+                      <span class="help-block" *ngIf="((assetTagDiscreteState.controls[i].get('isCommandable').touched ||
+                    assetTagDiscreteState.controls[i].get('isCommandable').dirty) &&
+                    assetTagDiscreteState.controls[i].get('isCommandable').errors)"><span
+                          i18n="Message|Please select Commandable@@isCommandable.message"
+                          *ngIf="assetTagDiscreteState.controls[i].get('isCommandable').errors.required">
+                          Please select Commandable
+                        </span>
+                      </span>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="standardState">
+                  <th i18n="Table|Standard State@@standardState" mat-header-cell *matHeaderCellDef> Standard State </th>
+                  <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                    <select formControlName="discreteStateId" class="form-control m-input">
+                      <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                      <option *ngFor="let discreteStateObj of  discreteState| orderByAlphabetical:'name'"
+                        [ngValue]="discreteStateObj.id">
+                        {{discreteStateObj.name}}</option>
+                    </select>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th i18n="Table|Status@@status" mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let element;let i = index; " [formGroupName]="i">
+                    <mat-radio-group formControlName="status">
+                      <mat-radio-button value="Active" i18n="Radio button|Active@@active" style="margin-right: 20px;">
+                        Active
+                      </mat-radio-button>
+                      <mat-radio-button value="In_Active" i18n="Radio button|InActive@@inActive">
+                        In-Active</mat-radio-button>
+                    </mat-radio-group>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                  <th i18n="Table|Action@@action" mat-header-cell *matHeaderCellDef> Action </th>
+                  <td mat-cell *matCellDef="let element;let i = index;">
+                    <a class="" (click)="deleteDiscreteAssetTagState(element,i)">
+                      <i class="fas fa-md fa-fw m-r-10 fa-trash-alt" alt="delete"
+                        i18n-matTooltip="Delete button|Click to Delete tooltip@@clickToDelete"
+                        matTooltip="Click to Delete"></i>
+                    </a>
+                  </td>
+                </ng-container>
+              </table>
+            </div>
+            <h3 i18n="No records found text|No records found@@noRecordsFound"
+              *ngIf="dataSource && !dataSource.data.length" class="text-center noRecordsFound">
+              No records found!
+            </h3>
+          </div>
+
+        </div>
+        <div class="path finalLine"></div>
+        <span class="help-block pull-right" *ngIf="dataSource && !dataSource.data.length"
+          i18n="Tooltip validation|Please add atleast one Asset Tag State@@pleaseAddAtleastOneAssetTagState">Please
+          add atleast one Asset Tag State</span>
+        <div class="row" style="text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <a (click)="cancelDiscreteForm($event)">
+              <button type="button" id="cancelAnalog" class="btn btn-default text-center cancelActionButton"
+                i18n="Cancel button|Cancel@@cancel"> Cancel
+              </button>
+            </a>
+            &nbsp;
+            <button type="button" class="btn btn-secondary text-center resetActionButton"
+              [disabled]="!discreteForm.dirty && discreteForm.pristine" (click)="resetdiscreteForm()"
+              i18n="Reset button|Reset@@reset">
+              Reset
+            </button>
+            &nbsp;
+            <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+              matTooltip="Fill the mandatory fields" [matTooltipDisabled]="discreteForm.valid">
+              <a>
+                <button i18n="Review&Save button|Review&Save@@review&Save"
+                  class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                  [disabled]="!discreteForm.valid && !isNumericValueDuplicate">
+                  Review & Save</button>
+              </a>
+            </span><br>
+            <span i18n="Message|No Duplicate Numeric Value Allowed@@noDuplicateNumericValueAllowed.message1" class="help-block"
+              *ngIf="isNumericValueDuplicate">
+              No Duplicate Numeric Value Allowed
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Discrete form view end here  -->
+
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationDanger)="confirmDelete();" (modelNotificationWarning)="alertRedirection()">
+</app-modal-notification>
